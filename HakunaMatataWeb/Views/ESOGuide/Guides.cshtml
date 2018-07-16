@@ -20,6 +20,7 @@
 			box-shadow: 2px 1px 2px 0px rgba(0, 0, 0, 0.38);
 			text-shadow: 2px 2px #000;
 			background-color: rgba(255, 255, 255, 0.28);
+			
 		}
 
 		.event-card-footer {
@@ -63,112 +64,133 @@
 		#event-cards .event-card:hover {
 			opacity: 1;
 		}
+
+		.scrollable {
+			height: 100000px;
+			overflow-y: visible;
+			padding-top: 2em;
+		}
+
+		.sidebar {
+			top: 5em;
+		}
+
 	</style>
 	<meta name="viewport" content="width=device-width" />
 	<title>View</title>
 </head>
 <body>
-	<div class="well well-sm col-md-12">
-		<h4 class="text-center">Filter Actions</h4>
-		<div id="hide-area">
-			<div class="col-md-2">
-				@foreach (KeyValuePair<string, int> item in ViewBag.GuideTypeOptions)
-				{
-					if (item.Value == 5) { break; }
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" id="@string.Concat(item.Key.ToLower(), "-checkbox")" value="@item.Value"> @item.Key
-						</label>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-2 d-sm-none d-md-block">
+
+				<div class="position-fixed sidebar">
+					<h4 class="text-center">Filter Actions</h4>
+					<div id="hide-area">
+
+						@foreach (KeyValuePair<string, int> item in ViewBag.GuideTypeOptions)
+						{
+							if (item.Value == 5) { break; }
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" id="@string.Concat(item.Key.ToLower(), "-checkbox")" value="@item.Value"> @item.Key
+								</label>
+							</div>
+						}
+
+
+						@foreach (KeyValuePair<string, int> item in ViewBag.GuideTypeOptions)
+						{
+							if (item.Value < 5) { continue; }
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" id="@string.Concat(item.Key.ToLower(), "-checkbox")" value="@item.Value"> @item.Key
+								</label>
+							</div>
+						}
+
+
+
+						<b>Text Search</b>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" id="text-search-title" value="title"> Title
+							</label>
+						</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" id="text-search-subtitle" value="sub"> Sub-Title
+							</label>
+						</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" id="text-search-content" value="content"> Content
+							</label>
+						</div>
+						<input type="text" class="form-control" placeholder="Search" />
 					</div>
+
+					@*<b>Date Search</b><br /><br />*@
+					<label for="date-from">Date From</label>
+					<input type="datetime-local" id="date-from" class="form-control" placeholder="Search" />
+					<br />
+					<label for="date-to">Date To</label>
+					<input type="datetime-local" id="date-to" class="form-control" placeholder="Search" />
+
+					Authors
+					<br />
+					@Html.ListBox("Authors", new MultiSelectList(ViewBag.GuideAuthors), new { @class = "form-control" })
+					<div class="col-md-12 text-center" id="hide-show-filters">
+						<btn id="show-hide-filters-button" class="btn btn-block"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></btn>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-10 d-xs-block scrollable">
+				<div id="event-cards">
+					<div class="row">
+						@foreach (var item in Model.ESOGuides)
+						{
+							<div class="col-md-3">
+								@if (item.ImageUrls.Count > 0)
+								{
+									<div class="event-card" style="background-image:url(@Url.Content(item.ImageUrls.FirstOrDefault())">
+										<div class="event-card-content">
+											<h4>@item.Title</h4>
+											<h6>@item.SubTitle</h6>
+										</div>
+										<div class="text-center event-card-footer">
+											@Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-success btn-block" })
+										</div>
+									</div>
+								}
+								else
+								{
+									<div class="event-card" style="color : #000">
+										<div class="event-card-content">
+											<h4>@item.Title</h4>
+											<h6>@item.SubTitle</h6>
+										</div>
+										<div class="text-center event-card-footer">
+											<a class="card-link">@Html.ActionLink("Details", "Details", new { id = item.Id })</a>
+										</div>
+									</div>
+								}
+
+							</div>
+
+						}
+					</div>
+				</div>
+				@if (Model.TotalCount > 20)
+				{
+					<div class="col-md-12"><button class="btn btn-block">Show More</button></div>
 				}
 			</div>
-			<div class="col-md-2">
-				@foreach (KeyValuePair<string, int> item in ViewBag.GuideTypeOptions)
-				{
-					if (item.Value < 5) { continue; }
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" id="@string.Concat(item.Key.ToLower(), "-checkbox")" value="@item.Value"> @item.Key
-						</label>
-					</div>
-				}
-
-			</div>
-			<div class="col-md-2">
-				<b>Text Search</b>
-				<div class="checkbox">
-					<label>
-						<input type="checkbox" id="text-search-title" value="title"> Title
-					</label>
-				</div>
-				<div class="checkbox">
-					<label>
-						<input type="checkbox" id="text-search-subtitle" value="sub"> Sub-Title
-					</label>
-				</div>
-				<div class="checkbox">
-					<label>
-						<input type="checkbox" id="text-search-content" value="content"> Content
-					</label>
-				</div>
-				<input type="text" class="form-control" placeholder="Search" />
-			</div>
-			<div class="col-md-2">
-				@*<b>Date Search</b><br /><br />*@
-				<label for="date-from">Date From</label>
-				<input type="datetime-local" id="date-from" class="form-control" placeholder="Search" />
-				<br />
-				<label for="date-to">Date To</label>
-				<input type="datetime-local" id="date-to" class="form-control" placeholder="Search" />
-			</div>
-			<div class="col-md-2">
-				Authors
-				<br />
-				@Html.ListBox("Authors", new MultiSelectList(ViewBag.GuideAuthors), new { @class= "form-control"})
-			</div>
 		</div>
-		<div class="col-md-12 text-center" id="hide-show-filters">
-			<btn id="show-hide-filters-button" class="btn btn-block"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></btn>
-		</div>
-
 	</div>
-	<div id="event-cards">
-		@foreach (var item in Model.ESOGuides)
-		{
-			<div class="col-md-3">
-				@if (item.ImageUrls.Count > 0)
-				{
-					<div class="event-card" style="background-image:url(@Url.Content(item.ImageUrls.FirstOrDefault())">
-						<div class="event-card-content">
-							<h4>@item.Title</h4>
-							<h6>@item.SubTitle</h6>
-						</div>
-						<div class="text-center event-card-footer">
-							@Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-success btn-block" })
-						</div>
-					</div>
-				}
-				else
-				{
-					<div class="event-card" style="color : #000">
-						<div class="event-card-content">
-							<h4>@item.Title</h4>
-							<h6>@item.SubTitle</h6>
-						</div>
-						<div class="text-center event-card-footer">
-							<a class="card-link">@Html.ActionLink("Details", "Details", new { id = item.Id })</a>
-						</div>
-					</div>
-				}
 
-			</div>
 
-		}
-	</div>	
-	@if (Model.TotalCount > 20)
-	{
-		<div class="col-md-12"><button class="btn btn-block">Show More</button></div>
-	}
 
 
 	@section Scripts {

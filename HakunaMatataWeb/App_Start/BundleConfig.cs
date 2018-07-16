@@ -26,6 +26,10 @@ namespace HakunaMatataWeb
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/scss/main-site.min.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/Sidebar/css").Include(
+                      //"~/Content/scss/main-site.min.css",
+                      "~/Content/scss/sidebar.min.css"));
         }
     }
 }

@@ -302,6 +302,13 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Content\scss\sidebar.css">
+      <DependentUpon>sidebar.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\scss\sidebar.min.css">
+      <DependentUpon>sidebar.css</DependentUpon>
+    </Content>
+    <Content Include="Content\scss\sidebar.scss" />
     <None Include="Controllers\GuildEventController.cs.old" />
     <Compile Include="Controllers\GuildEventsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -337,6 +344,7 @@
     <Content Include="Views\GuildEvents\Index.cshtml" />
     <Content Include="Views\GuildEvents\Administrate.cshtml" />
     <Content Include="Views\Shared\_LayoutBS3.cshtml" />
+    <Content Include="Views\Shared\_LayoutSidebar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
