@@ -1,0 +1,75 @@
+﻿@model HakunaMatataWeb.Models.ViewModels.News.NewsViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+	<tr>
+		<th>
+			@Html.DisplayNameFor(model => model.Title)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.SubTitle)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Content)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Author)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.CreationDate)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.LastUpdatedDate)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.AuthorId)
+		</th>
+		<th></th>
+	</tr>
+	@if (Model.NewsList != null)
+	{
+
+		foreach (var item in Model.NewsList)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Title)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.SubTitle)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Content)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Author)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.CreationDate)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.LastUpdatedDate)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.AuthorId)
+				</td>
+				<td>
+					@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+					@Html.ActionLink("Details", "Details", new { id = item.Id }) |
+					@Html.ActionLink("Delete", "Delete", new { id = item.Id })
+				</td>
+			</tr>
+		}
+
+	}
+
+
+</table>

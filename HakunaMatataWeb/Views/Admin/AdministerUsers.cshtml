@@ -1,0 +1,103 @@
+﻿@model HakunaMatataWeb.Models.ViewModels.AdministerUserViewModel
+@{
+	ViewBag.Title = "Administer Users";
+}
+
+<h2>Administer Users</h2>
+
+@using (Html.BeginForm("EditUser", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+	@Html.AntiForgeryToken()
+	<h4>Change User Claims</h4>
+	<hr />
+	<div class="form-group">
+		@Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.DropDownListFor(m => m.UserName, new SelectList(ViewBag.UserList, "Value", "Text"), null, new { @class = "form-control" })
+		</div>
+	</div>
+	@Html.ValidationSummary("", new { @class = "text-danger" })
+	<div class="form-group">
+		@Html.LabelFor(m => m.NewPassword, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.PasswordFor(m => m.NewPassword, new { @class = "form-control" })
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.DisplayName, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.TextBoxFor(m => m.DisplayName, new { @class = "form-control" })
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.GuildRank, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.DropDownListFor(m => m.GuildRank, (SelectList)ViewBag.GuildRankList, null, new { @class = "form-control" })
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.SiteRank, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.DropDownListFor(m => m.SiteRank, (SelectList)ViewBag.SiteRankList, null, new { @class = "form-control" })
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.LocalTimezone, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.DropDownListFor(m => m.LocalTimezone, (SelectList)Model.TimeZoneSelectList, null, new { @class = "form-control" })
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-offset-2 col-md-10">
+			<input type="submit" value="Submit" class="btn btn-default" />
+		</div>
+	</div>
+}
+
+@section scripts
+{
+	<script type="text/javascript">
+
+		$(document).ready(function () {
+			getRanks($('#UserName').val());
+		})
+
+		function getRanks(uid) {
+			var url = '/Admin/GetUserClaims?userId=' + uid;
+			$.ajax({
+				url: url,
+			})
+				.done(function (data) {
+					console.log(data);
+					var obj = JSON.parse(data);
+					if (data.GuildRank != "") {
+						$('#GuildRank').val(obj.GuildRank).change
+					};
+
+					if (data.SiteRank != "") {
+						$('#SiteRank').val(obj.SiteRank).change
+					};
+
+					if (data.DisplayName != "") {
+						$("#DisplayName").val(obj.DisplayName).change
+					};
+
+					if (data.LocalTimezone != "") {
+						console.log(obj.LocalTimezone);
+						$('#LocalTimezone').val(obj.TimeZone).change
+					};
+				});
+		}
+
+		$('#UserName').on('change', function () {
+			var uid = $(this).val();
+			getRanks(uid);
+		});
+	</script>
+}

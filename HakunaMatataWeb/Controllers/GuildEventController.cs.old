@@ -1,0 +1,119 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Security;
+using HakunaMatataWeb.Data.Models;
+using HakunaMatataWeb.Data.Services;
+using HakunaMatataWeb.Extensions;
+using HakunaMatataWeb.Models;
+using HakunaMatataWeb.Models.ViewModels.GuildEvents;
+using Microsoft.AspNet.Identity;
+
+namespace HakunaMatataWeb.Controllers
+{
+    public class GuildEventController : Controller
+    {
+        private readonly IGuildEventRepository guildEventRepository;
+
+        public GuildEventController()
+        { 
+        }
+
+        public GuildEventController(IGuildEventRepository GuildEventRepository)
+        {
+            guildEventRepository = GuildEventRepository;
+        }
+
+        [AuthorizeGuildRank(Data.Models.GuildRank.EventMaster)]
+        public ActionResult Create()
+        {
+            var model = new GuildEventViewModel();
+
+            try
+            {
+                model.EventMaster = User.Identity.GetDisplayName();
+                model.LocalTimeZoneId = User.GetClaimValueString(CustomClaims.LocalTimezone.ToString()) ?? string.Empty;
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+
+            return View(model);
+            
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(GuildEventViewModel model)
+        {
+            try
+            {
+                var uid = Membership.GetUser().ProviderUserKey.ToString();
+                model.LocalTimeZoneId = User.GetClaimValueString(CustomClaims.LocalTimezone.ToString()) ?? string.Empty;
+                var eventMaster = User.GetClaimValueString(CustomClaims.DisplayName.ToString()) ?? User.Identity.GetUserName();
+
+                List<int?> rd = new List<int?>();
+
+                if(model.Monday)
+                {
+                    rd.Add(0);
+                }
+                if(model.Tuesday)
+                {
+                    rd.Add(1);
+                }
+                if(model.Wendnesday)
+                {
+                    rd.Add(2);
+                }
+                if(model.Thurdsday)
+                {
+                    rd.Add(3);
+                }
+                if(model.Friday)
+                {
+                    rd.Add(4);
+                }
+                if(model.Saturday)
+                {
+                    rd.Add(5);
+                }
+                if(model.Sunday)
+                {
+                    rd.Add(6);
+                }
+
+
+
+                var e = new GuildEvent()
+                {
+                    CreationDate = DateTime.UtcNow,
+                    LocalTimeZoneId = model.LocalTimeZoneId,
+                    EventDate = model.EventDate,
+                    EventDescription = model.EventDescription,
+                    EventMaster = eventMaster,
+                    EventType = model.EventType,
+                    Featured = model.Featured,
+                    IsRecurring = model.IsRecurring,
+                    MaxLevel = model.MaxLevel,
+                    MinLevel = model.MinLevel,
+                    RecursionDays = rd.ToArray(),
+                    UserId = uid,
+                    Title = model.Title
+                };
+
+                await guildEventRepository.CreateGuildEventAsync(e);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+
+            return RedirectToAction("Create");
+        }
+    }
+}

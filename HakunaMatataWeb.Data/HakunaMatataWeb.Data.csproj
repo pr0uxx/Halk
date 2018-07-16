@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{753079AB-6D84-4E5E-AF99-38F9EE9B3A55}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HakunaMatataWeb.Data</RootNamespace>
+    <AssemblyName>HakunaMatataWeb.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.0\lib\net451\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.0.0\lib\net451\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.0.0\lib\net451\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.0.0\lib\net451\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataConnection\ApplicationDbContext.cs" />
+    <Compile Include="DataConnection\DataContext.cs" />
+    <Compile Include="Initialization\UserInitializer.cs" />
+    <Compile Include="Migrations\201806231807387_InitialCreate.cs" />
+    <Compile Include="Migrations\201806231807387_GuildRank.Designer.cs">
+      <DependentUpon>201806231807387_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806231832013_DisplayName.cs" />
+    <Compile Include="Migrations\201806231832013_DisplayName.Designer.cs">
+      <DependentUpon>201806231832013_DisplayName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806241513065_GuildEvents.cs" />
+    <Compile Include="Migrations\201806241513065_GuildEvents.Designer.cs">
+      <DependentUpon>201806241513065_GuildEvents.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807091613270_ESOGuides.cs" />
+    <Compile Include="Migrations\201807091613270_ESOGuides.Designer.cs">
+      <DependentUpon>201807091613270_ESOGuides.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807091714418_ESOGuides1.cs" />
+    <Compile Include="Migrations\201807091714418_ESOGuides1.Designer.cs">
+      <DependentUpon>201807091714418_ESOGuides1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807091731543_ESOGuides2.cs" />
+    <Compile Include="Migrations\201807091731543_ESOGuides2.Designer.cs">
+      <DependentUpon>201807091731543_ESOGuides2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807091739048_ESOGuides3.cs" />
+    <Compile Include="Migrations\201807091739048_ESOGuides3.Designer.cs">
+      <DependentUpon>201807091739048_ESOGuides3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807091757214_ESOGuides4.cs" />
+    <Compile Include="Migrations\201807091757214_ESOGuides4.Designer.cs">
+      <DependentUpon>201807091757214_ESOGuides4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807091808264_ESOGuides5.cs" />
+    <Compile Include="Migrations\201807091808264_ESOGuides5.Designer.cs">
+      <DependentUpon>201807091808264_ESOGuides5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807101352533_NewsItems1.cs" />
+    <Compile Include="Migrations\201807101352533_NewsItems1.Designer.cs">
+      <DependentUpon>201807101352533_NewsItems1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807151152025_BigStrings1.cs" />
+    <Compile Include="Migrations\201807151152025_BigStrings1.Designer.cs">
+      <DependentUpon>201807151152025_BigStrings1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807151530302_GERedux1.cs" />
+    <Compile Include="Migrations\201807151530302_GERedux1.Designer.cs">
+      <DependentUpon>201807151530302_GERedux1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ESOGuide.cs" />
+    <Compile Include="Models\EventType.cs" />
+    <Compile Include="Models\GuildEvent.cs" />
+    <Compile Include="Models\GuildRank.cs" />
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ImageUrl.cs" />
+    <Compile Include="Models\NewsItem.cs" />
+    <Compile Include="Models\RecursionType.cs" />
+    <Compile Include="Models\SiteRank.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\GuildEventRepository.cs" />
+    <Compile Include="Repository\IGuildEventRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entity\" />
+    <Folder Include="Identity\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201806231807387_GuildRank.resx">
+      <DependentUpon>201806231807387_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806231832013_DisplayName.resx">
+      <DependentUpon>201806231832013_DisplayName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806241513065_GuildEvents.resx">
+      <DependentUpon>201806241513065_GuildEvents.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807091613270_ESOGuides.resx">
+      <DependentUpon>201807091613270_ESOGuides.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807091714418_ESOGuides1.resx">
+      <DependentUpon>201807091714418_ESOGuides1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807091731543_ESOGuides2.resx">
+      <DependentUpon>201807091731543_ESOGuides2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807091739048_ESOGuides3.resx">
+      <DependentUpon>201807091739048_ESOGuides3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807091757214_ESOGuides4.resx">
+      <DependentUpon>201807091757214_ESOGuides4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807091808264_ESOGuides5.resx">
+      <DependentUpon>201807091808264_ESOGuides5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807101352533_NewsItems1.resx">
+      <DependentUpon>201807101352533_NewsItems1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807151152025_BigStrings1.resx">
+      <DependentUpon>201807151152025_BigStrings1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807151530302_GERedux1.resx">
+      <DependentUpon>201807151530302_GERedux1.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HakunaMatataWeb.Utilities\HakunaMatataWeb.Utilities.csproj">
+      <Project>{9e6a9a3e-fdc0-4733-bedd-4887333592a4}</Project>
+      <Name>HakunaMatataWeb.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,162 @@
+﻿@model HakunaMatataWeb.Data.Models.GuildEvent
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>GuildEvent</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EventType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsUniqueEvent)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsUniqueEvent)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsMonthly)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsMonthly)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsWeekly)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsWeekly)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsBiWeekly)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsBiWeekly)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventDayOfWeek)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EventDayOfWeek)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventDayOfMonth)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EventDayOfMonth)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventMaster)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EventMaster)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreationDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreationDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastUpdatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastUpdatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MinLevel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MinLevel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaxLevel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaxLevel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Featured)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Featured)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstEventDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstEventDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastEventDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastEventDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

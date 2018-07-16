@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+	<style>
+		body {
+			padding-top: 6em;
+		}
+	</style>
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Hakuna Matata", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li>@Html.ActionLink("Home", "Index", "Home")</li>
+					<li>@Html.ActionLink("About", "About", "Home")</li>
+					<li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+					@using HakunaMatataWeb.Extensions {
+					@if (User.GetClaimValueString(HakunaMatataWeb.Models.CustomClaims.SiteRank.ToString()).Equals("Developer"))
+					{
+						<li>@Html.ActionLink("Admin", "AdministerUsers", "Admin")</li>
+					}
+					@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Models.GuildRank>() > 2)
+					{
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+								Guild Events
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li>@Html.ActionLink("Events", "Index", "GuildEvents")</li>
+								<li>@Html.ActionLink("Adminstrate", "Administrate", "GuildEvents")</li>
+								<li>@Html.ActionLink("Create Event", "Create", "GuildEvents")</li>
+							</ul>
+						</li>
+
+					}
+					else
+					{
+						<li>@Html.ActionLink("Guild Events", "Index", "GuildEvents")</li>
+					}
+
+					@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Models.GuildRank>() > 2)
+					{
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+								Eso Guides
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li>@Html.ActionLink("Guides", "Guides", "ESOGuide")</li>
+								<li>@Html.ActionLink("Guides List", "Index", "ESOGuide")</li>
+								<li>@Html.ActionLink("Create Guide", "Create", "ESOGuide")</li>
+							</ul>
+						</li>
+					}
+					else
+					{
+						<li>@Html.ActionLink("ESO Guides", "Guides", "ESOGuide")</li>
+					}
+					@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Models.SiteRank>() > 2)
+					{
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+								News
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li>@Html.ActionLink("News", "Index", "News")</li>
+								<li>@Html.ActionLink("Administrate", "Administrate", "News")</li>
+								<li>@Html.ActionLink("Create", "Create", "News")</li>
+							</ul>
+						</li>
+					}
+					else
+					{
+						<li>@Html.ActionLink("News", "Index", "News")</li>
+					}
+
+
+				</ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid body-content">
+        @RenderBody()
+        
+		</div>
+	<footer class="container-fluid">
+		<hr />
+		<p>&copy; @DateTime.Now.Year - M.Howard. All rights reserved</p>
+	</footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

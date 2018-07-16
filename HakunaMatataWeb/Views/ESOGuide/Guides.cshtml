@@ -1,0 +1,187 @@
+﻿@model HakunaMatataWeb.Models.ViewModels.ESOGuides.ESOGuideViewPageViewModel
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<style>
+		img.media-object {
+			width: 100%;
+			display: block;
+		}
+
+		.event-card {
+			background-repeat: no-repeat;
+			color: #fff;
+			background-size: cover;
+			height: 14em;
+			position: relative;
+			box-shadow: 2px 1px 2px 0px rgba(0, 0, 0, 0.38);
+			text-shadow: 2px 2px #000;
+			background-color: rgba(255, 255, 255, 0.28);
+		}
+
+		.event-card-footer {
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			height: 2em;
+			background-color: rgba(255, 255, 255, 0.28);
+			font-weight: 600;
+			text-shadow: none;
+		}
+
+			.event-card-footer > .btn {
+				border-radius: initial;
+			}
+
+			.event-card-footer > a {
+				color: #fff;
+			}
+
+		.event-card-content {
+			padding: 1em;
+			height: 100%;
+			background: linear-gradient(to top, rgba(0,0,0,0), rgba(0,0,0,0.75));
+		}
+
+		#event-cards > div > .event-card {
+			-webkit-transition: 0.5s;
+			transition: 0.5s;
+		}
+
+		#event-cards > div > .event-card {
+			opacity: 0.9;
+		}
+
+		/* fade ONE in on hover */
+		#event-cards:hover .event-card {
+			opacity: 0.4;
+		}
+
+		#event-cards .event-card:hover {
+			opacity: 1;
+		}
+	</style>
+	<meta name="viewport" content="width=device-width" />
+	<title>View</title>
+</head>
+<body>
+	<div class="well well-sm col-md-12">
+		<h4 class="text-center">Filter Actions</h4>
+		<div id="hide-area">
+			<div class="col-md-2">
+				@foreach (KeyValuePair<string, int> item in ViewBag.GuideTypeOptions)
+				{
+					if (item.Value == 5) { break; }
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" id="@string.Concat(item.Key.ToLower(), "-checkbox")" value="@item.Value"> @item.Key
+						</label>
+					</div>
+				}
+			</div>
+			<div class="col-md-2">
+				@foreach (KeyValuePair<string, int> item in ViewBag.GuideTypeOptions)
+				{
+					if (item.Value < 5) { continue; }
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" id="@string.Concat(item.Key.ToLower(), "-checkbox")" value="@item.Value"> @item.Key
+						</label>
+					</div>
+				}
+
+			</div>
+			<div class="col-md-2">
+				<b>Text Search</b>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" id="text-search-title" value="title"> Title
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" id="text-search-subtitle" value="sub"> Sub-Title
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" id="text-search-content" value="content"> Content
+					</label>
+				</div>
+				<input type="text" class="form-control" placeholder="Search" />
+			</div>
+			<div class="col-md-2">
+				@*<b>Date Search</b><br /><br />*@
+				<label for="date-from">Date From</label>
+				<input type="datetime-local" id="date-from" class="form-control" placeholder="Search" />
+				<br />
+				<label for="date-to">Date To</label>
+				<input type="datetime-local" id="date-to" class="form-control" placeholder="Search" />
+			</div>
+			<div class="col-md-2">
+				Authors
+				<br />
+				@Html.ListBox("Authors", new MultiSelectList(ViewBag.GuideAuthors), new { @class= "form-control"})
+			</div>
+		</div>
+		<div class="col-md-12 text-center" id="hide-show-filters">
+			<btn id="show-hide-filters-button" class="btn btn-block"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></btn>
+		</div>
+
+	</div>
+	<div id="event-cards">
+		@foreach (var item in Model.ESOGuides)
+		{
+			<div class="col-md-3">
+				@if (item.ImageUrls.Count > 0)
+				{
+					<div class="event-card" style="background-image:url(@Url.Content(item.ImageUrls.FirstOrDefault())">
+						<div class="event-card-content">
+							<h4>@item.Title</h4>
+							<h6>@item.SubTitle</h6>
+						</div>
+						<div class="text-center event-card-footer">
+							@Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-success btn-block" })
+						</div>
+					</div>
+				}
+				else
+				{
+					<div class="event-card" style="color : #000">
+						<div class="event-card-content">
+							<h4>@item.Title</h4>
+							<h6>@item.SubTitle</h6>
+						</div>
+						<div class="text-center event-card-footer">
+							<a class="card-link">@Html.ActionLink("Details", "Details", new { id = item.Id })</a>
+						</div>
+					</div>
+				}
+
+			</div>
+
+		}
+	</div>	
+	@if (Model.TotalCount > 20)
+	{
+		<div class="col-md-12"><button class="btn btn-block">Show More</button></div>
+	}
+
+
+	@section Scripts {
+		@Scripts.Render("~/bundles/jqueryval")
+
+		<script type="text/javascript">
+			$('#show-hide-filters-button').on('click', function (e) {
+				$('#hide-area').toggle('slow');
+				$('#show-hide-filters-button').find('span').toggleClass('glyphicon-menu-down glyphicon-menu-up');
+			});
+
+		</script>
+	}
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+﻿@model HakunaMatataWeb.Data.Models.ESOGuide
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete</title>
+</head>
+<body>
+    <h3>Are you sure you want to delete this?</h3>
+    <div>
+        <h4>ESOGuide</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.GuideType)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.GuideType)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.SubTitle)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.SubTitle)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Content)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Content)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Author)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Author)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CreationDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.LastUpdatedDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.LastUpdatedDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.AuthorId)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.AuthorId)
+            </dd>
+    
+        </dl>
+    
+        @using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()
+    
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+</body>
+</html>
