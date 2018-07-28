@@ -1,8 +1,7 @@
 namespace HakunaMatataWeb.Data.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class GERedux1 : DbMigration
     {
         public override void Up()
@@ -21,7 +20,7 @@ namespace HakunaMatataWeb.Data.Migrations
             DropColumn("dbo.GuildEvent", "EventDescription");
             DropColumn("dbo.GuildEvent", "EventDate");
         }
-        
+
         public override void Down()
         {
             AddColumn("dbo.GuildEvent", "EventDate", c => c.DateTime(nullable: false));

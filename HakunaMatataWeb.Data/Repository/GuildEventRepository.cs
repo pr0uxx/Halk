@@ -2,8 +2,6 @@
 using HakunaMatataWeb.Data.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HakunaMatataWeb.Data.Services
@@ -30,7 +28,6 @@ namespace HakunaMatataWeb.Data.Services
             }
 
             return (rows, error);
-            
         }
 
         public async Task<(int Rows, IEnumerable<Exception> Errors)> BatchCreateGuildEventsAsync(IEnumerable<GuildEvent> guildEvents)
@@ -49,11 +46,9 @@ namespace HakunaMatataWeb.Data.Services
                 {
                     rows += iResult.Rows;
                 }
-
             }
 
             return (rows, errors);
         }
-
     }
 }

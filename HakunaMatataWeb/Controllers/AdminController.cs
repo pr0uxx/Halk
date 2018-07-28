@@ -1,15 +1,16 @@
-﻿using HakunaMatataWeb.Models.ViewModels;
+﻿using HakunaMatataWeb.Data.Enums;
+using HakunaMatataWeb.Services.Extensions;
+using HakunaMatataWeb.Models;
+using HakunaMatataWeb.Models.ViewModels;
+using HakunaMatataWeb.Utilities;
 using Microsoft.AspNet.Identity.Owin;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using HakunaMatataWeb.Extensions;
-using HakunaMatataWeb.Data.Models;
-using Newtonsoft.Json;
-using HakunaMatataWeb.Utilities;
 
 namespace HakunaMatataWeb.Controllers
 {
@@ -27,7 +28,6 @@ namespace HakunaMatataWeb.Controllers
 
         public AdminController()
         {
-
         }
 
         public ApplicationSignInManager SignInManager
@@ -53,7 +53,6 @@ namespace HakunaMatataWeb.Controllers
                 _userManager = value;
             }
         }
-
 
         //[AuthorizeClaim("SiteRank", "Developer")]
         [AuthorizeSiteRank(SiteRank.Developer)]
@@ -81,6 +80,7 @@ namespace HakunaMatataWeb.Controllers
             return View(m);
         }
 
+        [AuthorizeSiteRank(SiteRank.Developer)]
         public async Task<ActionResult> GetUserClaims(string userId)
         {
             var claims = await UserManager.GetClaimsAsync(userId);
@@ -130,7 +130,6 @@ namespace HakunaMatataWeb.Controllers
             var displayName = claims.FirstOrDefault(x => x.Type.Equals("DisplayName", StringComparison.OrdinalIgnoreCase));
             var localTimezone = claims.FirstOrDefault(x => x.Type.Equals("LocalTimezone", StringComparison.OrdinalIgnoreCase));
 
-
             //change GuildRank
             if (guildRank != null)
             {
@@ -150,8 +149,6 @@ namespace HakunaMatataWeb.Controllers
             {
                 var result = await UserManager.AddClaimAsync(user.Id, new System.Security.Claims.Claim("GuildRank", model.GuildRank.ToString()));
             }
-
-
 
             //change SiteRank
             if (siteRank != null)
@@ -173,14 +170,11 @@ namespace HakunaMatataWeb.Controllers
                 var result = await UserManager.AddClaimAsync(user.Id, new System.Security.Claims.Claim("SiteRank", model.SiteRank.ToString()));
             }
 
-
             //change DisplayName
             if (!string.IsNullOrEmpty(model.DisplayName))
             {
                 if (!model.DisplayName.Equals(displayName))
                 {
-
-
                     if ((claims.Any(x => x.Type.ToString().Equals("DisplayName"))))
                     {
                         var result = await UserManager.RemoveClaimAsync(user.Id, new System.Security.Claims.Claim("DisplayName", displayName.Value));
@@ -193,13 +187,12 @@ namespace HakunaMatataWeb.Controllers
                     {
                         var result = await UserManager.AddClaimAsync(user.Id, new System.Security.Claims.Claim("DisplayName", model.DisplayName.ToString()));
                     }
-
                 }
             }
 
             if (!model.LocalTimezone.Equals("0"))
             {
-                if (localTimezone != null && !string.IsNullOrEmpty( localTimezone.ToString()))
+                if (localTimezone != null && !string.IsNullOrEmpty(localTimezone.ToString()))
                 {
                     var result = await UserManager.RemoveClaimAsync(user.Id, new System.Security.Claims.Claim("LocalTimezone", model.LocalTimezone.ToString()));
                     if (result.Succeeded)
@@ -215,6 +208,5 @@ namespace HakunaMatataWeb.Controllers
 
             return RedirectToAction("AdministerUsers");
         }
-
     }
 }

@@ -1,4 +1,5 @@
-﻿@model HakunaMatataWeb.Models.ViewModels.GuildEvents.GuildEventCalendarViewModel
+﻿@model HakunaMatataWeb.Models.GuildEventModels.GuildEventCalendarViewModel
+@using HakunaMatataWeb.Data.Enums
 
 @{
 	ViewBag.Title = "Event Calendar";
@@ -29,46 +30,198 @@
 		padding-top: 0;
 	}
 </style>
+</div>
 
-<h2>Guild Event Calendar</h2>
-<h3>@Model.Month</h3>
-
-
-<div class="col-12" id="CalendarMain">
-	<div class="container-fluid">
-
-		@foreach (var day in Model.DayDataList)
+<table class="table table-dark table-bordered squaretable">
+	<thead>
+		<tr>
+			<th class="text-center" colspan="7">
+				<h2>Guild Event Calendar</h2>
+				<h3><span id="this-month" data-value="@Model.Month">@Model.MonthString</span> <span id="this-year">@Model.Year</span> </h3>
+				<a id="page-left" class="btn-custom gradient-forest-green float-left mr-4">Last Month</a>
+				<a id="page-right" class="btn-custom gradient-forest-green float-left">Next Month</a>
+				<a id="table-theme" class="btn-custom gradient-forest-green float-right">Switch Table Theme</a>
+			</th>
+		</tr>
+		<tr>
+			<th scope="col">Monday</th>
+			<th scope="col">Tuesday</th>
+			<th scope="col">Wednesday</th>
+			<th scope="col">Thursday</th>
+			<th scope="col">Friday</th>
+			<th scope="col">Saturday</th>
+			<th scope="col">Sunday</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var x in Model.DayDataList)
 		{
-			if (Model.DayDataList.IndexOf(day) == 0)
+			if (Model.DayDataList.IndexOf(x) == 0)
 			{
-				@:<div class="row">
+				@:<tr>
+				}
+				if (x.IsOutsideMonth)
+				{
+					<td class="disabled">
+						<span class="dom">@x.DayOfMonth</span>
+						<div class="col-12">
+							<ul class="list-group list-group-flush">
+								@if (x.GuildEvents != null && x.GuildEvents.Count > 0)
+								{
+									foreach (var ge in x.GuildEvents)
+									{
+										<li class="list-group-item list-group-item-disabled">@Html.ActionLink(ge.Item1, "Details", new { id = ge.Item2 })</li>
+										if (x.GuildEvents.IndexOf(ge) == 3)
+										{
+											<li class="list-group-item">
+												<a class="day-events">All Events</a>
+											</li>
+											break;
+										}
+									}
+								}
+								else
+								{
+									<li class="list-group-item list-group-item-disabled">No Events</li>
+								}
+							</ul>
+						</div>
+					</td>
+				}
+				else
+				{
+					<td>
+						<span class="dom">@x.DayOfMonth</span>
+						<div class="col-12">
+							<ul class="list-group list-group-flush">
+								@if (x.GuildEvents != null && x.GuildEvents.Count > 0)
+								{
+									foreach (var ge in x.GuildEvents)
+									{
+
+										<li class="list-group-item list-group-item-dark btn-calendar @ge.Item3" onclick="location.href = '@Url.Action("Details", new { id = ge.Item2 })'">@Html.ActionLink(ge.Item1, "Details", new { id = ge.Item2 })</li>
+										if (x.GuildEvents.IndexOf(ge) == 3)
+										{
+											<li class="list-group-item">
+												<span class="day-events">All Events</span>
+											</li>
+											break;
+										}
+									}
+								}
+								else
+								{
+									<li class="list-group-item  list-group-item-dark list-group-item-disabled-dark">No Events</li>
+								}
+							</ul>
+						</div>
+					</td>
+				}
+
+				if (Model.DayDataList.IndexOf(x) == Model.DayDataList.Count - 1)
+				{
+				@:</tr>
 			}
-			<div class="border calendar-panel">
-				<div class="col-12 text-left">
-					<h3>@day.DayOfMonth | @day.DayName</h3>
-				</div>
-				<div class="col-12">
-					<ul class="list-group">
-						@if (day.GuildEvents != null && day.GuildEvents.Count > 0)
-						{
-							foreach (var ge in day.GuildEvents)
-							{
-								<li class="list-group-item">@Html.ActionLink(ge.Item1, "Details", new { id = ge.Item2 })</li>
-							}
-						}
-					</ul>
-				</div>
-			</div>
-			if (Model.DayDataList.IndexOf(day) == Model.DayDataList.Count - 1)
+
+			else if ((Model.DayDataList.IndexOf(x) + 1) % 7 == 0)
 			{
-				@:<div class=@string.Concat("col-" + (10 - (Model.DayDataList.IndexOf(day) % 7)))>
-				@Html.Raw("</div>");
-				@Html.Raw("</div>");
-			}
-			else if ((Model.DayDataList.IndexOf(day) + 1) % 7 == 0)
-			{
-				@:</div><div class="row">
+				@:</tr>
 			}
 		}
-		</div>
-		</div>
+	</tbody>
+</table>
+
+@section Scripts {
+	<script>
+		$('#table-theme').on('click', function (e) {
+			$('table').toggleClass('table-dark')
+		})
+
+		function redrawTable(Month, Year) {
+			$.getJSON("/GuildEvents/GetMonthGuildEvents?month=" + Month + "&year=" + Year, function (data) {
+				testData = data;
+				var boxes = $("table td");
+				$('#this-month').attr("data-value", data.Month);
+				$('#this-month').text(data.MonthString);
+				$('#this-year').text(data.Year);
+				var daycount = 0;
+				$.each(data.DayDataList, function (i, item) {
+					daycount++;
+					var box = $(boxes[i]);
+					if (box != null) {
+						box.find('.dom').text(item.DayOfMonth);
+						if (item.IsOutsideMonth == true) {
+							box.addClass('disabled');
+							if (item.GuildEvents.length > 0) {
+								box.find('.list-group-flush').empty();
+								$.each(item.GuildEvents, function (i, x) {
+									$(box.find('.list-group-flush')).append("<li class=\"list-group-item list-group-item-disabled\"><a href=\"GuildEvents/Details/\"" + x.Item2 + "\"")
+								})
+							}
+							else {
+								$(box.find('.list-group-flush')).empty();
+								$(box.find('.list-group-flush')).append("<li class=\"list-group-item list-group-item-disabled\">No Events</li>");
+							}
+						}
+						else {
+							box.removeClass('disabled');
+							if (item.GuildEvents.length > 0) {
+								box.find('.list-group-flush').empty();
+								$.each(item.GuildEvents, function (i, x) {
+									$(box.find('.list-group-flush')).append("<li class=\"list-group-item list-group-item-dark btn-calendar " + x.Item3 + "\" onclick=\"location.href = \'GuildEvents/Details/" + x.Item2 + "'\"><a href=\"GuildEvents/Details/" + x.Item2 + "\">" + x.Item1 + "</a></li>");
+								})
+							}
+							else {
+								$(box.find('.list-group-flush')).empty();
+								$(box.find('.list-group-flush')).append("<li class=\"list-group-item list-group-item-disabled\">No Events</li>");
+
+							}
+						}
+					}
+					else {
+						console.log("missing day :(");
+					}
+
+				});
+
+				if (daycount < (boxes.length + 1)) {
+					for (var i = 0; (i + daycount) < (boxes.length); i++) {
+						var box = $(boxes[(i + daycount)]);
+						box.addClass('disabled');
+						$(box.find('.list-group-flush')).empty();
+						$(box.find('.list-group-flush')).append("<li class=\"list-group-item list-group-item-disabled\">No Events</li>");
+						box.find('.dom').text(i + 1);
+					};
+				}
+				else {
+					console.log("Bad month dc: " + daycount + " bl+1:  " + (boxes.length + 1))
+				}
+			});
+		}
+
+		//previous month
+		$('#page-left').on('click', function (e) {
+			var Month = +($('#this-month').attr("data-value")) - 1;
+			var Year = parseInt($('#this-year').text(), 10);
+			console.log(Year);
+			if (Month == 0) {
+				Month = 12;
+				Year = (Year - 1);
+			}
+			console.log(Year);
+			redrawTable(Month, Year);
+		});
+
+		//next month
+		$('#page-right').on('click', function (e) {
+			var Month = +($('#this-month').attr("data-value")) + 1;
+			var Year = +($('#this-year').text());
+			if (Month == 13) {
+				Month = 1;
+				Year = Year + 1;
+			}
+			redrawTable(Month, Year);
+		})
+	</script>
+}
+

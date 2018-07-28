@@ -1,9 +1,8 @@
-﻿using System.Data.Entity;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using HakunaMatataWeb.Data.Models;
+﻿using HakunaMatataWeb.Data.Enums;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace HakunaMatataWeb.Models
 {
@@ -26,14 +25,4 @@ namespace HakunaMatataWeb.Models
         public SiteRank SiteRank { get; set; }
         public string DisplayName { get; set; }
     }
-
-    public enum CustomClaims
-    {
-        GuildRank,
-        SiteRank,
-        DisplayName,
-        LocalTimezone
-    }
-
-    
 }

@@ -18,7 +18,6 @@ function convertMarkdown() {
 		url: '../../Utilities/ConvertMarkdown',
 		data: { markdown: $('#Content').val() },
 		type: 'POST',
-
 	})
 		.done(function (data) {
 			$('#preview-pane').html(data);

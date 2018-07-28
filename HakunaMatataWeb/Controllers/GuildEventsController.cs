@@ -1,21 +1,21 @@
-﻿using System;
+﻿using HakunaMatataWeb.Data.DataConnection;
+using HakunaMatataWeb.Data.Enums;
+using HakunaMatataWeb.Data.Models;
+using HakunaMatataWeb.Services.Extensions;
+using HakunaMatataWeb.Models.GuildEventModels;
+using HakunaMatataWeb.Utilities;
+using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using HakunaMatataWeb.Data.DataConnection;
-using HakunaMatataWeb.Data.Models;
-using HakunaMatataWeb.Utilities;
-using HakunaMatataWeb.Extensions;
-using HakunaMatataWeb.Models;
-using HakunaMatataWeb.Models.ViewModels.GuildEvents;
-using Microsoft.AspNet.Identity;
-using HakunaMatataWeb.Extensions;
 using System.Data.Entity.Validation;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web.Mvc;
+using HakunaMatataWeb.Services.GuildEventServices;
+using System.Security.Principal;
 
 namespace HakunaMatataWeb.Controllers
 {
@@ -23,76 +23,102 @@ namespace HakunaMatataWeb.Controllers
     public class GuildEventsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private IGuildEventService eventService;
+
+        public GuildEventsController()
+            : this(new GuildEventService())
+        {
+        }
+
+        public GuildEventsController(IGuildEventService EventService)
+        {
+            eventService = EventService;
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> GetMonthGuildEvents(string month, string year)
+        {
+            int Month;
+            int Year;
+            try
+            {
+                Month = Convert.ToInt32(month);
+                Year = Convert.ToInt32(year);
+            }
+            catch (Exception ex)
+            {
+                return (Json("You sent me a bad month or year!", JsonRequestBehavior.AllowGet));
+            }
+            
+
+            var firstDayOfMonth = new DateTime(Year, Month, 1);
+            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+            var m = new GuildEventCalendarViewModel();
+
+            var localTimeZone = User.GetClaimValueString(CustomClaims.LocalTimezone.ToString());
+
+            m = await eventService.GetMonthEventCalendarAsync(Month, Year, localTimeZone);
+
+            return Json(m, JsonRequestBehavior.AllowGet);
+        }
 
         // GET: GuildEvents
         [AllowAnonymous]
         public async Task<ActionResult> Index()
         {
-            var guildEvents = await db.GuildEvents.Where(x => x.FirstEventDate < DateTime.Now && x.LastEventDate > DateTime.Now).ToListAsync();
-
-
-            var localTimeZone = User.GetClaimValueString(CustomClaims.LocalTimezone.ToString());
-            var m = new GuildEventCalendarViewModel();
-            m.DayDataList = new List<DayData>();
             var now = DateTime.Now;
             var firstDayOfMonth = new DateTime(now.Year, now.Month, 1);
             var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+            var m = new GuildEventCalendarViewModel();
+            var localTimeZone = User.GetClaimValueString(CustomClaims.LocalTimezone.ToString());
+            m = await eventService.GetMonthEventCalendarAsync(now.Month, now.Year, localTimeZone); 
 
-            var dateCounter = firstDayOfMonth;
-            m.Month = DateTime.Today.Month;
-
-            while (dateCounter < lastDayOfMonth)
-            {
-                var d = new DayData()
-                {
-                    Date = dateCounter,
-                    DayName = dateCounter.DayOfWeek.ToString(),
-                    DayOfWeek = (int)dateCounter.DayOfWeek,
-                    DayOfMonth = (int)dateCounter.Day,
-                    WeekOfMonth = (int)dateCounter.GetWeekOfMonth()
-                };
-
-                if (guildEvents.Count > 0)
-                {
-                    //var r = guildEvents.Where(x => (x.EventDayOfMonth == d.DayOfMonth && x.IsMonthly) || (x.EventDayOfWeek.Equals(d.DayOfWeek) && x.IsWeekly) ||
-                    //    (x.IsBiWeekly && ((d.WeekOfMonth.Equals(x.FirstEventDate.GetWeekOfMonth()) || (d.WeekOfMonth + 2) == x.FirstEventDate.GetWeekOfMonth()) && x.EventDayOfWeek == d.DayOfWeek)))
-                    //    .Select(x => new Tuple<string, int>(x.Title, x.Id)).ToList();
-                    d.GuildEvents = new List<Tuple<string, int>>();
-                    foreach (var r in guildEvents)
-                    {
-                        if (r.EventDayOfMonth.Equals(d.DayOfMonth) && r.IsMonthly)
-                        {
-                            d.GuildEvents.Add(new Tuple<string, int>(r.Title, r.Id));
-                            continue;
-                        }
-                        if (r.EventDayOfWeek.Equals(d.DayOfWeek) && r.IsWeekly)
-                        {
-                            d.GuildEvents.Add(new Tuple<string, int>(r.Title, r.Id));
-                            continue;
-                        }
-                        if (r.IsBiWeekly)
-                        {
-                            bool oddWeek = Convert.ToBoolean(r.FirstEventDate.GetWeekOfMonth() % 2);
-                            bool isDayOddWeek = Convert.ToBoolean(d.WeekOfMonth % 2);
-
-                            if (oddWeek == isDayOddWeek && r.EventDayOfWeek.Equals(d.DayOfWeek))
-                            {
-                                d.GuildEvents.Add(new Tuple<string, int>(r.Title, r.Id));
-                            }
-                        }
-                    }
-                }
-
-
-
-                m.DayDataList.Add(d);
-                dateCounter = dateCounter.AddDays(1);
-            }
             string strong = "stronk";
 
-
-
             return View(m);
+        }
+
+        private List<DayData> StandardiseDayData(List<DayData> data, DateTime firstDay, DateTime lastDay)
+        {
+            int fd = (int)firstDay.DayOfWeek;
+
+            if (fd != 1)
+            {
+                int dif = fd - 1;
+
+                //correct for sundays
+                if (dif == -1)
+                {
+                    dif = 6;
+                }
+
+                var l = new List<DayData>();
+
+                for (int i = 0; i < dif; i++)
+                {
+                    DayOfWeek dayOfWeek = (DayOfWeek)(fd);
+                    var ds = firstDay.AddDays(-(dif - i + 1)).DayOfWeek.ToString();
+
+                    var thisDay = firstDay.AddDays(-(dif - i));
+
+                    var d = new DayData()
+                    {
+                        Date = thisDay,
+                        DayName = thisDay.DayOfWeek.ToString(),
+                        DayOfMonth = thisDay.Day,
+                        DayOfWeek = (int)thisDay.DayOfWeek,
+                        GuildEvents = new List<Tuple<string, int, string>>(),
+                        IsOutsideMonth = true,
+                        WeekOfMonth = (int)thisDay.GetWeekOfMonth()
+                    };
+
+                    l.Add(d);
+                }
+
+                data.InsertRange(0, l);
+            }
+
+            return data;
         }
 
         public async Task<ActionResult> Administrate()
@@ -127,7 +153,28 @@ namespace HakunaMatataWeb.Controllers
                 return HttpNotFound();
             }
             guildEvent.Content = Helper.Base64Decode(guildEvent.Content);
-            return View(guildEvent);
+
+            var model = new GuildEventDetailsViewModel()
+            {
+                Description = Helper.ConvertMarkdown(guildEvent.Content),
+                EvenetDayOfWeek = guildEvent.EventDayOfWeek.ToString(),
+                EventDayOfMonth = guildEvent.EventDayOfMonth,
+                EventMaster = guildEvent.EventMaster,
+                EventTimeOfDay = guildEvent.FirstEventDate.ToString("dddd"),
+                EventType = guildEvent.EventType.ToString(),
+                FirstEventDate = guildEvent.FirstEventDate,
+                Id = guildEvent.Id,
+                IsBiWeekly = guildEvent.IsBiWeekly,
+                IsMonthly = guildEvent.IsMonthly,
+                IsUniqueEvent = guildEvent.IsUniqueEvent,
+                LastEventDate = guildEvent.LastEventDate,
+                MaxLevel = guildEvent.MaxLevel,
+                MinLevel = guildEvent.MinLevel,
+                IsWeekly = guildEvent.IsWeekly,
+                Title = guildEvent.Title
+            };
+
+            return View(model);
         }
 
         // GET: GuildEvents/Create
@@ -137,7 +184,7 @@ namespace HakunaMatataWeb.Controllers
         }
 
         // POST: GuildEvents/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -156,7 +203,7 @@ namespace HakunaMatataWeb.Controllers
             }
             if (guildEvent.IsMonthly)
             {
-                guildEvent.EventDayOfMonth = (int)guildEvent.FirstEventDate.DayOfWeek;
+                guildEvent.EventDayOfMonth = (int)guildEvent.FirstEventDate.Day;
             }
 
             if (ModelState.IsValid)
@@ -238,7 +285,7 @@ namespace HakunaMatataWeb.Controllers
         }
 
         // POST: GuildEvents/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -262,15 +309,13 @@ namespace HakunaMatataWeb.Controllers
             i.LastUpdatedDate = DateTime.Now;
             i.LocalTimeZoneId = i.LocalTimeZoneId ?? User.GetClaimValueString(CustomClaims.LocalTimezone.ToString());
 
-
-
             if (i.IsBiWeekly)
             {
                 i.EventDayOfWeek = (int)i.FirstEventDate.DayOfWeek;
             }
             if (i.IsMonthly)
             {
-                i.EventDayOfMonth = (int)i.FirstEventDate.DayOfWeek;
+                i.EventDayOfMonth = (int)i.FirstEventDate.Day;
             }
             i.LastUpdatedDate = DateTime.Now;
             i.Content = Helper.Base64Encode(m.Content);
@@ -282,7 +327,7 @@ namespace HakunaMatataWeb.Controllers
                     await db.SaveChangesAsync();
                     return RedirectToAction("Index");
                 }
-                catch(DbEntityValidationException e)
+                catch (DbEntityValidationException e)
                 {
                     foreach (var eve in e.EntityValidationErrors)
                     {
@@ -295,7 +340,6 @@ namespace HakunaMatataWeb.Controllers
                         }
                     }
                 }
-                
             }
             return View(m);
         }
@@ -326,9 +370,8 @@ namespace HakunaMatataWeb.Controllers
             return RedirectToAction("Index");
         }
 
-
-
         #region helpers
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -337,6 +380,7 @@ namespace HakunaMatataWeb.Controllers
             }
             base.Dispose(disposing);
         }
-        #endregion
+
+        #endregion helpers
     }
 }

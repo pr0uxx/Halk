@@ -1,16 +1,15 @@
 ﻿using HakunaMatataWeb.Data.DataConnection;
+using HakunaMatataWeb.Data.Enums;
 using HakunaMatataWeb.Data.Models;
-using HakunaMatataWeb.Extensions;
-using HakunaMatataWeb.Models.ViewModels.News;
+using HakunaMatataWeb.Services.Extensions;
+using HakunaMatataWeb.Models.News;
 using HakunaMatataWeb.Utilities;
 using Microsoft.AspNet.Identity;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace HakunaMatataWeb.Controllers
@@ -22,9 +21,9 @@ namespace HakunaMatataWeb.Controllers
 
         // GET: News
         [AllowAnonymous]
-        public  async Task<ActionResult> Index()
+        public async Task<ActionResult> Index()
         {
-            var dbResult = await db.NewsItems.OrderBy(x=> x.CreationDate).Take(10).ToListAsync();
+            var dbResult = await db.NewsItems.OrderBy(x => x.CreationDate).Take(10).ToListAsync();
 
             NewsViewModel model = new NewsViewModel()
             {
@@ -74,7 +73,6 @@ namespace HakunaMatataWeb.Controllers
             };
 
             return View(model);
-
         }
 
         // GET: News/Create
@@ -90,7 +88,6 @@ namespace HakunaMatataWeb.Controllers
         [HttpPost]
         public ActionResult Create([Bind(Include = "Title,SubTitle,Content")] NewsViewModel model)
         {
-            
             if (ModelState.IsValid)
             {
                 var n = new NewsItem()
@@ -166,7 +163,6 @@ namespace HakunaMatataWeb.Controllers
             };
 
             return View(model);
-
         }
 
         //POST News/Edit
@@ -204,7 +200,5 @@ namespace HakunaMatataWeb.Controllers
             }
             base.Dispose(disposing);
         }
-
-
     }
 }

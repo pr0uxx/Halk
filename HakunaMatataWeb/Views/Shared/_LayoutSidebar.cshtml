@@ -1,4 +1,4 @@
-﻿@using HakunaMatataWeb.Extensions
+﻿@using HakunaMatataWeb.Services.Extensions
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,10 +7,9 @@
 	<title>@ViewBag.Title</title>
 	@Styles.Render("~/Sidebar/css")
 	@Scripts.Render("~/bundles/modernizr")
+
 	<style>
-
 	</style>
-
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -31,11 +30,11 @@
 					@Html.ActionLink("Contact", "Contact", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link" })
 				</li>
 
-				@if (User.GetClaimValueString(HakunaMatataWeb.Models.CustomClaims.SiteRank.ToString()).Equals("Developer"))
+				@if (User.GetClaimValueString(HakunaMatataWeb.Data.Enums.CustomClaims.SiteRank.ToString()).Equals("Developer"))
 				{
 					<li class="nav-item">@Html.ActionLink("Admin", "AdministerUsers", "Admin", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
 				}
-				@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Models.GuildRank>() > 2)
+				@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Enums.GuildRank>() > 2)
 				{
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -66,7 +65,7 @@
 					<li class="nav-item">@Html.ActionLink("ESO Guides", "Guides", "ESOGuide", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
 				}
 
-				@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Models.SiteRank>() > 2)
+				@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Enums.SiteRank>() > 2)
 				{
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -129,7 +128,6 @@
 			</ul>
 		</div>
 	</div>
-	
 
 	<footer class="container-fluid">
 		<hr />

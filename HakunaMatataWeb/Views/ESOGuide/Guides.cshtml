@@ -1,5 +1,4 @@
-﻿@model HakunaMatataWeb.Models.ViewModels.ESOGuides.ESOGuideViewPageViewModel
-
+﻿@model HakunaMatataWeb.Models.ESOGuides.ESOGuideViewPageViewModel
 
 <!DOCTYPE html>
 
@@ -20,7 +19,6 @@
 			box-shadow: 2px 1px 2px 0px rgba(0, 0, 0, 0.38);
 			text-shadow: 2px 2px #000;
 			background-color: rgba(255, 255, 255, 0.28);
-			
 		}
 
 		.event-card-footer {
@@ -66,7 +64,6 @@
 		}
 
 		.scrollable {
-			height: 100000px;
 			overflow-y: visible;
 			padding-top: 2em;
 		}
@@ -74,61 +71,60 @@
 		.sidebar {
 			top: 5em;
 		}
-
 	</style>
 	<meta name="viewport" content="width=device-width" />
 	<title>View</title>
 </head>
 <body>
+	</div>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-2 d-sm-none d-md-block">
-
-				<div class="position-fixed sidebar">
-					<h4 class="text-center">Filter Actions</h4>
-					<div id="hide-area">
-
+			<div class="col-md-2 d-sm-none d-md-block pt-4">
+				<h4 class="text-center">Filter Actions</h4>
+				<div id="hide-area">
+					<div class="col-12">
 						@foreach (KeyValuePair<string, int> item in ViewBag.GuideTypeOptions)
 						{
-							if (item.Value == 5) { break; }
-							<div class="checkbox">
-								<label>
-									<input type="checkbox" id="@string.Concat(item.Key.ToLower(), "-checkbox")" value="@item.Value"> @item.Key
-								</label>
+							<div class="col6">
+								<div class="form-check form-check-inline">
+									<label for="#@string.Concat(item.Key.ToLower(), "-checkbox")" class="form-check-label">
+										<input type="checkbox" class="form-check-input" id="@string.Concat(item.Key.ToLower(), "-checkbox")" value="@item.Value"> @item.Key
+									</label>
+								</div>
 							</div>
+
 						}
-
-
-						@foreach (KeyValuePair<string, int> item in ViewBag.GuideTypeOptions)
-						{
-							if (item.Value < 5) { continue; }
-							<div class="checkbox">
-								<label>
-									<input type="checkbox" id="@string.Concat(item.Key.ToLower(), "-checkbox")" value="@item.Value"> @item.Key
-								</label>
-							</div>
-						}
-
-
-
+					</div>
+					<hr />
+					<div class="col-12">
 						<b>Text Search</b>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" id="text-search-title" value="title"> Title
-							</label>
+						<br />
+						<div class="col-12">
+							<div class="form-check form-check-inline">
+								<label class="form-check-label" for="#text-search-title">
+									<input type="checkbox" class="form-check-input" id="text-search-title" value="title"> Title
+								</label>
+							</div>
 						</div>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" id="text-search-subtitle" value="sub"> Sub-Title
-							</label>
+						<div class="col-12">
+							<div class="form-check form-check-inline">
+								<label class="form-check-label" for="#text-search-subtitle">
+									<input type="checkbox" class="form-check-input" id="text-search-subtitle" value="sub"> Sub-Title
+								</label>
+							</div>
 						</div>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" id="text-search-content" value="content"> Content
-							</label>
+						<div class="col-12">
+							<div class="form-check form-check-inline">
+								<label class="form-check-label" for="#text-search-content">
+									<input type="checkbox" class="form-check-input" id="text-search-content" value="content"> Content
+								</label>
+							</div>
 						</div>
+
+
 						<input type="text" class="form-control" placeholder="Search" />
 					</div>
+					<hr />
 
 					@*<b>Date Search</b><br /><br />*@
 					<label for="date-from">Date From</label>
@@ -143,6 +139,7 @@
 					<div class="col-md-12 text-center" id="hide-show-filters">
 						<btn id="show-hide-filters-button" class="btn btn-block"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></btn>
 					</div>
+
 				</div>
 			</div>
 
@@ -151,7 +148,7 @@
 					<div class="row">
 						@foreach (var item in Model.ESOGuides)
 						{
-							<div class="col-md-3">
+							<div class="col-md-3 pt-4">
 								@if (item.ImageUrls.Count > 0)
 								{
 									<div class="event-card" style="background-image:url(@Url.Content(item.ImageUrls.FirstOrDefault())">
@@ -172,11 +169,10 @@
 											<h6>@item.SubTitle</h6>
 										</div>
 										<div class="text-center event-card-footer">
-											<a class="card-link">@Html.ActionLink("Details", "Details", new { id = item.Id })</a>
+											@Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-success btn-block" })
 										</div>
 									</div>
 								}
-
 							</div>
 
 						}
@@ -190,9 +186,6 @@
 		</div>
 	</div>
 
-
-
-
 	@section Scripts {
 		@Scripts.Render("~/bundles/jqueryval")
 
@@ -201,9 +194,7 @@
 				$('#hide-area').toggle('slow');
 				$('#show-hide-filters-button').find('span').toggleClass('glyphicon-menu-down glyphicon-menu-up');
 			});
-
 		</script>
 	}
 </body>
-
 </html>

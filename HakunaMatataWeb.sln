@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HakunaMatataWeb.Data", "Hak
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HakunaMatataWeb.Utilities", "HakunaMatataWeb.Utilities\HakunaMatataWeb.Utilities.csproj", "{9E6A9A3E-FDC0-4733-BEDD-4887333592A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HakunaMatataWeb.Services", "HakunaMatataWeb.Services\HakunaMatataWeb.Services.csproj", "{4FE26964-28EC-4751-9336-F622DEA23D4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HakunaMatataWeb.Models", "HakunaMatataWeb.Models\HakunaMatataWeb.Models.csproj", "{FF1A9B16-03C0-4857-B0C1-F825D3B19A4E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{9E6A9A3E-FDC0-4733-BEDD-4887333592A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E6A9A3E-FDC0-4733-BEDD-4887333592A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E6A9A3E-FDC0-4733-BEDD-4887333592A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FE26964-28EC-4751-9336-F622DEA23D4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FE26964-28EC-4751-9336-F622DEA23D4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FE26964-28EC-4751-9336-F622DEA23D4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FE26964-28EC-4751-9336-F622DEA23D4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF1A9B16-03C0-4857-B0C1-F825D3B19A4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF1A9B16-03C0-4857-B0C1-F825D3B19A4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF1A9B16-03C0-4857-B0C1-F825D3B19A4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF1A9B16-03C0-4857-B0C1-F825D3B19A4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

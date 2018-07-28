@@ -1,4 +1,4 @@
-﻿@using HakunaMatataWeb.Extensions
+﻿@using HakunaMatataWeb.Services.Extensions
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,12 +8,10 @@
 	@Styles.Render("~/Content/css")
 	@Scripts.Render("~/bundles/modernizr")
 	<style>
-
 	</style>
-
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<nav class="navbar navbar-expand-lg navbar-dark gradient-blue-black">
 		@Html.ActionLink("Hakuna Matata", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "navbar-brand" })
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
@@ -21,21 +19,11 @@
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item">
-					@Html.ActionLink("Home", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link" })
-				</li>
-				<li class="nav-item">
-					@Html.ActionLink("About", "About", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link" })
-				</li>
-				<li class="nav-item">
-					@Html.ActionLink("Contact", "Contact", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link" })
-				</li>
-
-				@if (User.GetClaimValueString(HakunaMatataWeb.Models.CustomClaims.SiteRank.ToString()).Equals("Developer"))
+				@if (User.GetClaimValueString(HakunaMatataWeb.Data.Enums.CustomClaims.SiteRank.ToString()).Equals("Developer"))
 				{
 					<li class="nav-item">@Html.ActionLink("Admin", "AdministerUsers", "Admin", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
 				}
-				@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Models.GuildRank>() > 2)
+				@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Enums.GuildRank>() > 2)
 				{
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -66,7 +54,7 @@
 					<li class="nav-item">@Html.ActionLink("ESO Guides", "Guides", "ESOGuide", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
 				}
 
-				@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Models.SiteRank>() > 2)
+				@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Enums.SiteRank>() > 2)
 				{
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -85,9 +73,10 @@
 					<li class="nav-item">@Html.ActionLink("News", "Index", "News", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
 				}
 			</ul>
-			<form class="form-inline my-2 my-lg-0">
+
+			<form class="form-inline ml-auto my-2 my-lg-0">
 				<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				<button class="btn-custom gradient-forest-green my-sm-0" type="submit">Search</button>
 			</form>
 			@Html.Partial("_LoginPartial")
 		</div>
@@ -96,10 +85,47 @@
 		@RenderBody()
 	</div>
 
-	<footer class="container-fluid">
-		<hr />
-		<p>&copy; @DateTime.Now.Year - M.Howard. All rights reserved</p>
-	</footer>
+	<!--FOOTER-->
+	<!-- Footer -->
+
+	<br />
+	<section id="footer" class="footer-main">
+		<div class="col-12">
+			<div class="row text-center text-xs-center text-sm-center text-md-center">
+				<div class="col-xs-12 col-sm-4 col-md-4">
+					<h5>Quick links</h5>
+					<ul class="list-unstyled quick-links">
+						<li><a href="#"><i class="fa fa-angle-double-right"></i>Home</a></li>
+						<li><a href="#"><i class="fa fa-angle-double-right"></i>About</a></li>
+						<li><a href="#"><i class="fa fa-angle-double-right"></i>FAQ</a></li>
+					</ul>
+				</div>
+				<div class="col-xs-12 col-sm-4 col-md-4">
+					<h5>Quick links</h5>
+					<ul class="list-unstyled quick-links">
+						<li><a href="#"><i class="fa fa-angle-double-right"></i>Home</a></li>
+						<li><a href="#"><i class="fa fa-angle-double-right"></i>About</a></li>
+						<li><a href="#"><i class="fa fa-angle-double-right"></i>FAQ</a></li>
+					</ul>
+				</div>
+				<div class="col-xs-12 col-sm-4 col-md-4">
+					<h5>Quick links</h5>
+					<ul class="list-unstyled quick-links">
+						<li><a href="@Url.Action("About", "Home")"><i class="fa fa-angle-double-right"></i>About</a></li>
+						<li><a href="@Url.Action("Index", "Home")"><i class="fa fa-angle-double-right"></i>Home</a></li>
+						<li><a href="@Url.Action("Contact", "Home")"><i class="fa fa-angle-double-right"></i>Contact</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
+					<p class="h6">&copy; @DateTime.Now.Year - M.Howard. All rights reserved</p>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- ./Footer -->
+	<!--FOOTER DONE-->
 
 	@Scripts.Render("~/bundles/jquery")
 	@Scripts.Render("~/bundles/bootstrap")

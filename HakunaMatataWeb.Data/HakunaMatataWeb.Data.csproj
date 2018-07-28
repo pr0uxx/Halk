@@ -77,7 +77,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataConnection\ApplicationDbContext.cs" />
-    <Compile Include="DataConnection\DataContext.cs" />
+    <Compile Include="Enums\CustomClaims.cs" />
+    <Compile Include="Enums\EventType.cs" />
+    <Compile Include="Enums\GuildRank.cs" />
+    <Compile Include="Enums\SiteRank.cs" />
     <Compile Include="Initialization\UserInitializer.cs" />
     <Compile Include="Migrations\201806231807387_InitialCreate.cs" />
     <Compile Include="Migrations\201806231807387_GuildRank.Designer.cs">
@@ -129,14 +132,11 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ESOGuide.cs" />
-    <Compile Include="Models\EventType.cs" />
     <Compile Include="Models\GuildEvent.cs" />
-    <Compile Include="Models\GuildRank.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ImageUrl.cs" />
     <Compile Include="Models\NewsItem.cs" />
     <Compile Include="Models\RecursionType.cs" />
-    <Compile Include="Models\SiteRank.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\GuildEventRepository.cs" />
     <Compile Include="Repository\IGuildEventRepository.cs" />

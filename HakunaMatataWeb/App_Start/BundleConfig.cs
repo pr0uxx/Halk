@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace HakunaMatataWeb
 {
@@ -8,6 +7,12 @@ namespace HakunaMatataWeb
         // For more information on bundling, visit https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            bundles.UseCdn = true;
+
+            var fullCalendarJS = "https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js";
+            var fullCalendarCSS = "https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css";
+            var fullCalendarBundle = new ScriptBundle("~/bundles/calendar", fullCalendarJS);
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
@@ -21,15 +26,27 @@ namespace HakunaMatataWeb
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js",
+                      "~/Scripts/FontAwesome/all.min.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/datetime").Include(
+                "~/Scripts/moment-js.min.js"));
+
+            bundles.Add(fullCalendarBundle);
+
+            bundles.Add(new StyleBundle("~/Calendar/css", fullCalendarCSS));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/scss/main-site.min.css",
-                      "~/Content/site.css"));
+                        "~/Content/scss/bootstrap/bootstrap.min.css",
+                        "~/Content/site.css",
+                        "~/Content/scss/main-site.min.css"
+                      ));
 
             bundles.Add(new StyleBundle("~/Sidebar/css").Include(
                       //"~/Content/scss/main-site.min.css",
                       "~/Content/scss/sidebar.min.css"));
+
+            BundleTable.EnableOptimizations = false;
         }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.Owin.Security.DataProtection;
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(HakunaMatataWeb.Startup))]
+
 namespace HakunaMatataWeb
 {
     public partial class Startup

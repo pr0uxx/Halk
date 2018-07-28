@@ -1,20 +1,19 @@
-﻿using System;
+﻿using HakunaMatataWeb.Data.DataConnection;
+using HakunaMatataWeb.Data.Models;
+using HakunaMatataWeb.Data.Enums;
+using HakunaMatataWeb.Services.Extensions;
+using HakunaMatataWeb.Models.ESOGuides;
+using HakunaMatataWeb.Utilities;
+using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using HakunaMatataWeb.Data.DataConnection;
-using HakunaMatataWeb.Data.Models;
-using HakunaMatataWeb.Extensions;
-using Microsoft.AspNet.Identity;
-using HakunaMatataWeb.Models.ViewModels.ESOGuides;
-using Markdig;
 using System.Text.RegularExpressions;
-using HakunaMatataWeb.Utilities;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace HakunaMatataWeb.Controllers
 {
@@ -37,7 +36,6 @@ namespace HakunaMatataWeb.Controllers
                     imgList.Add(img.Uri);
                 }
 
-
                 var m = new ESOGuideViewModel()
                 {
                     Content = d.Content,
@@ -52,7 +50,6 @@ namespace HakunaMatataWeb.Controllers
 
                 model.Add(m);
             }
-
 
             return View(model);
         }
@@ -75,7 +72,6 @@ namespace HakunaMatataWeb.Controllers
                 dbResult = dbResult.Take(20).ToList();
             }
 
-
             List<ESOGuideViewModel> guides = new List<ESOGuideViewModel>();
 
             foreach (var d in dbResult)
@@ -85,7 +81,6 @@ namespace HakunaMatataWeb.Controllers
                 {
                     imgList.Add(img.Uri);
                 }
-
 
                 var m = new ESOGuideViewModel()
                 {
@@ -99,17 +94,22 @@ namespace HakunaMatataWeb.Controllers
                     LastUpdatedDate = d.LastUpdatedDate.ToString("dd/MM/yyyy")
                 };
 
-                if (m.ImageUrls.Count < 1)
+                if (m.ImageUrls.Count < 1 && d.Content != null)
                 {
-                    foreach (Match item in Regex.Matches(d.Content, @"(http|ftp|https):\/\/([\w\-_]+(?:(?:\.[\w\-_]+)+))([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?"))
+                    var Matches = Regex.Matches(d.Content, @"(http|ftp|https):\/\/([\w\-_]+(?:(?:\.[\w\-_]+)+))([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?");
+
+                    if (Matches != null)
                     {
-                        if (Helper.IsImageUrl(item.Value))
+                        foreach (Match item in Matches)
                         {
-                            m.ImageUrls.Add(item.Value);
+                            if (Helper.IsImageUrl(item.Value))
+                            {
+                                m.ImageUrls.Add(item.Value);
+                            }
                         }
                     }
+                    
                 }
-
 
                 guides.Add(m);
             }
@@ -118,8 +118,6 @@ namespace HakunaMatataWeb.Controllers
 
             return View(model);
         }
-
-
 
         // GET: ESOGuide/Details/5
         public async Task<ActionResult> Details(int? id)
@@ -142,7 +140,6 @@ namespace HakunaMatataWeb.Controllers
                     imgList.Add(img.Uri);
                 }
             }
-
 
             var model = new ESOGuideViewModel()
             {
@@ -168,13 +165,12 @@ namespace HakunaMatataWeb.Controllers
         }
 
         // POST: ESOGuide/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "GuideType,Title,SubTitle,Content")] ESOGuideViewModel eSOGuide)
         {
-
             if (ModelState.IsValid)
             {
                 List<ImageUrl> i = new List<ImageUrl>();
@@ -194,13 +190,11 @@ namespace HakunaMatataWeb.Controllers
                             {
                                 ModelState.AddModelError("Bad Url", new Exception(string.Concat("Unrecognised Url: ", i)));
                             }
-
                         }
                         catch
                         {
                             ModelState.AddModelError("Bad Url", new Exception(string.Concat("Unrecognised Url: ", i)));
                         }
-
                     }
                 }
 
@@ -213,8 +207,6 @@ namespace HakunaMatataWeb.Controllers
 
             return View(eSOGuide);
         }
-
-
 
         // GET: ESOGuide/Edit/5
         public async Task<ActionResult> Edit(int? id)
@@ -240,12 +232,11 @@ namespace HakunaMatataWeb.Controllers
 
             var g = ConvertGuideDbToViewModel(e, i);
 
-
             return View(g);
         }
 
         // POST: ESOGuide/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -267,16 +258,12 @@ namespace HakunaMatataWeb.Controllers
 
                 var g = ConvertGuideViewToDbModel(e, i);
 
-
-
                 db.Entry(g).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(e);
         }
-
-        
 
         // GET: ESOGuide/Delete/5
         public async Task<ActionResult> Delete(int? id)
@@ -317,7 +304,6 @@ namespace HakunaMatataWeb.Controllers
                 //ImageUrls = i,
                 //SubTitle = e.SubTitle,
                 //Title = e.Title
-
             };
 
             g.LastUpdatedDate = DateTime.Now;
@@ -341,7 +327,6 @@ namespace HakunaMatataWeb.Controllers
             {
                 g.EsoGuideId = e.Id;
             }
-
 
             return g;
         }

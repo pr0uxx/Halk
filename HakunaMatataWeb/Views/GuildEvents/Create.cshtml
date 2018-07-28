@@ -1,11 +1,11 @@
-﻿@model HakunaMatataWeb.Models.ViewModels.GuildEvents.GuildEventViewModel
+﻿@model HakunaMatataWeb.Models.GuildEventModels.GuildEventViewModel
+@using HakunaMatataWeb.Data.Enums
 
 @{
 	ViewBag.Title = "Create";
 }
 
 <h2>Create</h2>
-
 
 @using (Html.BeginForm())
 {
@@ -75,7 +75,7 @@
 		<div class="form-group">
 			@Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
-				@Html.EditorFor(model => model.Content, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.TextAreaFor(model => model.Content, new { htmlAttributes = new { @class = "form-control" } })
 				@Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
 			</div>
 		</div>
@@ -106,19 +106,29 @@
 			</div>
 		</div>
 
-		<div class="form-group">
+		<div class="form-group datetimepicker">
 			@Html.LabelFor(model => model.FirstEventDate, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
-				@Html.EditorFor(model => model.FirstEventDate, new { htmlAttributes = new { @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.FirstEventDate, "", new { @class = "text-danger" })
+				<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+					@Html.EditorFor(model => model.FirstEventDate, new { htmlAttributes = new { @class = "form-control datetimepicker-input", data_target = "#datetimepicker1" } })
+					<div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+						<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+					</div>
+					@Html.ValidationMessageFor(model => model.FirstEventDate, "", new { @class = "text-danger" })
+				</div>
 			</div>
 		</div>
 
 		<div class="form-group">
 			@Html.LabelFor(model => model.LastEventDate, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
-				@Html.EditorFor(model => model.LastEventDate, new { htmlAttributes = new { @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.LastEventDate, "", new { @class = "text-danger" })
+				<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+					@Html.EditorFor(model => model.LastEventDate, new { htmlAttributes = new { @class = "form-control datetimepicker-input", data_target = "#datetimepicker2" } })
+					<div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+						<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+					</div>
+					@Html.ValidationMessageFor(model => model.LastEventDate, "", new { @class = "text-danger" })
+				</div>
 			</div>
 		</div>
 
@@ -136,4 +146,57 @@
 
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/datetime")
+	<script type="text/javascript" src="~/Scripts/MarkdownConverter.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
+	<script type="text/javascript">
+		$(function () {
+			$.validator.methods.date = function (value, element) {
+				return this.optional(element) || moment(value, "DD/MM/YYYY HH:mm", true).isValid();
+			}
+		});
+
+		$(document).ready(function () {
+			var t = moment().add(7, 'days');
+
+			//var fromDate = $('#datetimepicker1');
+			//var fdChild = $('#datetimepicker1:nth-child(3)');
+			//var toDate = $('#datetimepicker1');
+
+			//fromDate.on("focusout", function () {
+			//	fromDate.datetimepicker(fromDate.find('.bootstrap-datetimepicker-widget').hide());
+			//})
+
+			//fromDate.on("focus", function () {
+			//	fromDate.datetimepicker(fromDate.find('.bootstrap-datetimepicker-widget').show());
+			//})
+
+			var test;
+
+			$('.datetimepicker-input').on('focus', function (e) {
+				test = $(this);
+				$(this).siblings().find('.input-group-text').click();
+			})
+
+			$('#datetimepicker1').datetimepicker(
+				{
+					sideBySide: true,
+					//maxDate: $('#datetimepicker2').datetimepicker('date'),
+					date: moment(),
+					allowInputToggle: true,
+					format: 'DD/MM/YYYY HH:mm'
+				}
+			);
+			$('#datetimepicker2').datetimepicker(
+				{
+					sideBySide: true,
+					//minDate: $('#datetimepicker1').datetimepicker('date'),
+					date: t,
+					allowInputToggle: true,
+					format: 'DD/MM/YYYY HH:mm'
+				}
+			);
+		});
+	</script>
 }

@@ -1,5 +1,5 @@
-﻿@model IEnumerable<HakunaMatataWeb.Models.ViewModels.ESOGuides.ESOGuideViewModel>
-@using HakunaMatataWeb.Extensions
+﻿@model IEnumerable<HakunaMatataWeb.Models.ESOGuides.ESOGuideViewModel>
+@using HakunaMatataWeb.Services.Extensions
 <!DOCTYPE html>
 
 <html>
@@ -8,7 +8,7 @@
 	<title>Index</title>
 </head>
 <body>
-	@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Models.GuildRank>() > 2)
+	@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Enums.GuildRank>() > 2)
 	{
 		@Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success" })
 	}
@@ -69,7 +69,7 @@
 				@*<td>
 						@Html.DisplayFor(modelItem => item.AuthorId)
 					</td>*@
-				@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Models.GuildRank>() > 2)
+				@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Enums.GuildRank>() > 2)
 				{
 					<td>
 						@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
@@ -85,7 +85,6 @@
 				}
 			</tr>
 		}
-
 	</table>
 </body>
 </html>

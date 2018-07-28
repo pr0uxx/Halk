@@ -11,7 +11,6 @@
 			padding-top: 6em;
 		}
 	</style>
-
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -29,12 +28,12 @@
 					<li>@Html.ActionLink("Home", "Index", "Home")</li>
 					<li>@Html.ActionLink("About", "About", "Home")</li>
 					<li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-					@using HakunaMatataWeb.Extensions {
-					@if (User.GetClaimValueString(HakunaMatataWeb.Models.CustomClaims.SiteRank.ToString()).Equals("Developer"))
+					@using HakunaMatataWeb.Services.Extensions {
+					@if (User.GetClaimValueString(HakunaMatataWeb.Data.Enums.CustomClaims.SiteRank.ToString()).Equals("Developer"))
 					{
 						<li>@Html.ActionLink("Admin", "AdministerUsers", "Admin")</li>
 					}
-					@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Models.GuildRank>() > 2)
+					@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Enums.GuildRank>() > 2)
 					{
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -54,7 +53,7 @@
 						<li>@Html.ActionLink("Guild Events", "Index", "GuildEvents")</li>
 					}
 
-					@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Models.GuildRank>() > 2)
+					@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Enums.GuildRank>() > 2)
 					{
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -72,7 +71,7 @@
 					{
 						<li>@Html.ActionLink("ESO Guides", "Guides", "ESOGuide")</li>
 					}
-					@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Models.SiteRank>() > 2)
+					@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Enums.SiteRank>() > 2)
 					{
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -90,8 +89,6 @@
 					{
 						<li>@Html.ActionLink("News", "Index", "News")</li>
 					}
-
-
 				</ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -99,7 +96,6 @@
     </div>
     <div class="container-fluid body-content">
         @RenderBody()
-        
 		</div>
 	<footer class="container-fluid">
 		<hr />

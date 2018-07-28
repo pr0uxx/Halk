@@ -2,10 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
 
@@ -85,7 +82,6 @@ namespace HakunaMatataWeb.Utilities
             {
                 return utcDate;
             }
-
         }
 
         public static bool IsImageUrl(string URL)
@@ -105,9 +101,7 @@ namespace HakunaMatataWeb.Utilities
             {
                 return false;
             }
-
         }
-
 
         /// <summary>
         /// Converts Markdown string to Html
@@ -143,7 +137,5 @@ namespace HakunaMatataWeb.Utilities
             var result = System.Convert.FromBase64String(s);
             return System.Text.Encoding.UTF8.GetString(result);
         }
-
-
     }
 }
