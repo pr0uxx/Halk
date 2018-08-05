@@ -160,22 +160,7 @@
 		$(document).ready(function () {
 			var t = moment().add(7, 'days');
 
-			//var fromDate = $('#datetimepicker1');
-			//var fdChild = $('#datetimepicker1:nth-child(3)');
-			//var toDate = $('#datetimepicker1');
-
-			//fromDate.on("focusout", function () {
-			//	fromDate.datetimepicker(fromDate.find('.bootstrap-datetimepicker-widget').hide());
-			//})
-
-			//fromDate.on("focus", function () {
-			//	fromDate.datetimepicker(fromDate.find('.bootstrap-datetimepicker-widget').show());
-			//})
-
-			var test;
-
 			$('.datetimepicker-input').on('focus', function (e) {
-				test = $(this);
 				$(this).siblings().find('.input-group-text').click();
 			})
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
@@ -10,6 +11,11 @@ namespace HakunaMatataWeb.Utilities
 {
     public class Helper
     {
+        public static String CleanInputString(string dirtyString)
+        {
+            return new string(dirtyString.Where(Char.IsLetterOrDigit).ToArray());
+        }
+
         public static SelectList GetEnumSelectList<T>()
         {
             Array values = Enum.GetValues(typeof(T));

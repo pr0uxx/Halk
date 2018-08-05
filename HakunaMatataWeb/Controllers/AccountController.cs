@@ -18,9 +18,12 @@ namespace HakunaMatataWeb.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        
 
         public AccountController()
         {
+            
         }
 
         public AccountController(ApplicationUserManager UserManager, ApplicationSignInManager SignInManager)
@@ -71,25 +74,41 @@ namespace HakunaMatataWeb.Controllers
         {
             if (!ModelState.IsValid)
             {
+                logger.Error(string.Concat(model.UserName, " login failed. Model state invalid "));
+                foreach (var i in ModelState.Values)
+                {
+                    if (i.Errors.Count > 0)
+                    {
+                        foreach (var e in i.Errors)
+                        {
+                            logger.Error(string.Concat(model.UserName, " model Error:: ", e.ErrorMessage));
+                        }
+                        
+                    }
+                }
                 return View(model);
             }
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
+                    logger.Trace(string.Concat(model.UserName, " successfully logged in"));
                     return RedirectToLocal(returnUrl);
 
                 case SignInStatus.LockedOut:
+                    logger.Trace(string.Concat(model.UserName, " login failed. User is locked out"));
                     return View("Lockout");
 
                 case SignInStatus.RequiresVerification:
+                    logger.Error(string.Concat(model.UserName, " login failed. User requires verification"));
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
 
                 case SignInStatus.Failure:
                 default:
+                    logger.Error(string.Concat(model.UserName, " failed for unhandled reason. ", result));
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
             }
@@ -157,13 +176,15 @@ namespace HakunaMatataWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            model.TimezoneList = new SelectList(Helper.GetTimeZoneList(), "Value", "Text", "0");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, SiteRank = Data.Enums.SiteRank.User };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, SiteRank = Data.Enums.SiteRank.User};
 
                 try
                 {
                     var result = await userManager.CreateAsync(user, model.Password);
+
                     if (result.Succeeded)
                     {
                         await signInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);

@@ -88,7 +88,7 @@
 							<div class="col6">
 								<div class="form-check form-check-inline">
 									<label for="#@string.Concat(item.Key.ToLower(), "-checkbox")" class="form-check-label">
-										<input type="checkbox" class="form-check-input" id="@string.Concat(item.Key.ToLower(), "-checkbox")" value="@item.Value"> @item.Key
+										<input type="checkbox" class="form-check-input" id="@string.Concat(item.Key.ToLower(), "-checkbox")" value="@item.Value" checked> @item.Key
 									</label>
 								</div>
 							</div>
@@ -127,18 +127,38 @@
 					<hr />
 
 					@*<b>Date Search</b><br /><br />*@
-					<label for="date-from">Date From</label>
-					<input type="datetime-local" id="date-from" class="form-control" placeholder="Search" />
-					<br />
-					<label for="date-to">Date To</label>
-					<input type="datetime-local" id="date-to" class="form-control" placeholder="Search" />
-
-					Authors
-					<br />
-					@Html.ListBox("Authors", new MultiSelectList(ViewBag.GuideAuthors), new { @class = "form-control" })
-					<div class="col-md-12 text-center" id="hide-show-filters">
-						<btn id="show-hide-filters-button" class="btn btn-block"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></btn>
+					<div class="form-group datetimepicker">
+						<label for="date-from">Date From</label>
+						<div class="col-md-12">
+							<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+								<input id="date-from" class="form-control datetimepicker-input" placeholder="Search" />
+								<div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+									<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+								</div>
+							</div>
+						</div>
 					</div>
+
+					<div class="form-group datetimepicker">
+						<label for="date-from">Date To</label>
+						<div class="col-md-12">
+							<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+								<input id="date-to" class="form-control datetimepicker-input" placeholder="Search" />
+								<div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+									<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					@*<label for="date-to">Date To</label>
+						<input type="datetime-local" id="date-to" class="form-control" placeholder="Search" />*@
+
+					@*Authors
+						<br />*@
+					@*@Html.ListBox("Authors", new MultiSelectList(ViewBag.GuideAuthors), new { @class = "form-control" })
+						<div class="col-md-12 text-center" id="hide-show-filters">
+							<btn id="show-hide-filters-button" class="btn btn-block"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></btn>
+						</div>*@
 
 				</div>
 			</div>
@@ -148,7 +168,7 @@
 					<div class="row">
 						@foreach (var item in Model.ESOGuides)
 						{
-							<div class="col-md-3 pt-4">
+							<div class="col-md-3 pt-4 event-card-container">
 								@if (item.ImageUrls.Count > 0)
 								{
 									<div class="event-card" style="background-image:url(@Url.Content(item.ImageUrls.FirstOrDefault())">
@@ -187,12 +207,152 @@
 	</div>
 
 	@section Scripts {
+		@Scripts.Render("~/bundles/datetime")
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
 		@Scripts.Render("~/bundles/jqueryval")
 
 		<script type="text/javascript">
 			$('#show-hide-filters-button').on('click', function (e) {
 				$('#hide-area').toggle('slow');
 				$('#show-hide-filters-button').find('span').toggleClass('glyphicon-menu-down glyphicon-menu-up');
+			});
+
+			
+
+			$(document).ready(function () {
+				var p = moment().add(-365, 'days');
+				var t = moment().add(7, 'days');
+
+				$('.datetimepicker-input').on('focus', function (e) {
+					$(this).siblings().find('.input-group-text').click();
+				})
+
+				$('#datetimepicker1').datetimepicker(
+					{
+						sideBySide: false,
+						//maxDate: $('#datetimepicker2').datetimepicker('date'),
+						date: p,
+						allowInputToggle: true,
+						format: 'DD/MM/YYYY'
+					}
+				);
+				$('#datetimepicker2').datetimepicker(
+					{
+						sideBySide: true,
+						//minDate: $('#datetimepicker1').datetimepicker('date'),
+						date: t,
+						allowInputToggle: true,
+						format: 'DD/MM/YYYY'
+					}
+				);
+
+
+				$('#hide-area').on('change', function (e) {
+					setTimeout(function () {
+						var t = $(e.target);
+
+						var inputs = $('#hide-area input');
+						var searchObject = {
+							"AllEventTypes": true,
+							"EventTypes": [],
+							"TextSearchTypes": [],
+							"AllSearchTypes": true,
+							"TextSearchString": "",
+							"DateFrom": "",
+							"DateTo": ""
+						};
+
+						$.each(inputs, function (index, value) {
+							var v = $(value);
+
+							if (v.val() != null) {
+								if ($.isNumeric(v.val())) {
+									//Event Type
+									if (v.is(':checked')) {
+										searchObject.EventTypes.push(v.val());
+									}
+									else {
+										searchObject.AllEventTypes = false;
+									}
+								}
+								else {
+
+									if (v.is(':checked')) {
+										searchObject.TextSearchTypes.push(v.val())
+									}
+									else if (v.attr('type') == "text") {
+										searchObject.TextSearchString = v.val();
+									}
+									else if (v.attr('type') == "checkbox") {
+										searchObject.AllSearchTypes = false;
+									}
+									else if (v.attr('id') == "date-to") {
+										searchObject.DateTo = v.val();
+									}
+									else if (v.attr('id') == "date-from") {
+										searchObject.DateFrom = v.val();
+									}
+									else {
+										console.log('unrecognised input with value: ' + v.val());
+									}
+								}
+							}
+							else if (v.text() != null) {
+								searchObject.TextSearchString = v.text();
+							}
+							else {
+								console.log("unrecognised input", index);
+							}
+						});
+
+						console.log(searchObject);
+
+						$.ajax({
+							dataType: "json",
+							contentType: "application/json",
+							type: 'POST',
+							url: '/ESOGuide/FilterGuides',
+							data: JSON.stringify(searchObject)
+						}).done(function (data) {
+							console.log(data);
+							$('.event-card-container').remove();
+
+							$.each(data, function (i, value) {
+								$('#event-cards > .row').append('<div id="gen-con-' + i + '" class="col-md-3 pt-4 event-card-container"></div>');
+								console.log(value.ImageUrls.length);
+								if (value.ImageUrls.length > 0) {
+									$('#gen-con-' + i).append(
+										'<div class="event-card" style="background-image:url(' + value.ImageUrls[0] + ')">'
+										+ '<div class="event-card-content">'
+										+ '<h4>' + value.Title + '</h4>'
+										+ '<h6>' + value.SubTitle + '</h6>'
+										+ '</div>'
+										+ '<div class="text-center event-card-footer">'
+										+ '<a href="/ESOGuide/Details/' + value.Id + '" class= "btn btn-success btn-block">Details</a>'
+										+ '</div>'
+										+ '</div>'
+									)
+								}
+								else {
+									$('#gen-con-' + i).append(
+										'<div class="event-card" style="color : #000">'
+										+ '<div class="event-card-content">'
+										+ '<h4>' + value.Title + '</h4>'
+										+ '<h6>' + value.SubTitle + '</h6>'
+										+ '</div>'
+										+ '<div class="text-center event-card-footer">'
+										+ '<a href="/ESOGuide/Details/' + value.Id + '" class= "btn btn-success btn-block">Details</a>'
+										+ '</div>'
+										+ '</div>'
+									)
+								}
+							})
+						});
+
+					}, 5);
+
+
+				})
 			});
 		</script>
 	}

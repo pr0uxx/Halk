@@ -11,6 +11,7 @@ namespace HakunaMatataWeb.Data.DataConnection
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+            Database.SetInitializer<ApplicationDbContext>(new CreateDatabaseIfNotExists<ApplicationDbContext>());
         }
 
         public DbSet<GuildEvent> GuildEvents { get; set; }
