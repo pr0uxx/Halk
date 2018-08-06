@@ -74,6 +74,29 @@ namespace HakunaMatataWeb.Services.GuildEventServices
 
             m.DayDataList = StandardiseDayData(m.DayDataList, firstDayOfMonth, lastDayOfMonth);
 
+            var diff = 42 - m.DayDataList.Count;
+            var endDate = dateCounter.AddDays(diff);
+            if (m.DayDataList.Count < 42)
+            {
+                while (dateCounter < endDate)
+                {
+                    var d = new DayData()
+                    {
+                        Date = dateCounter,
+                        DayName = dateCounter.DayOfWeek.ToString(),
+                        DayOfWeek = (int)dateCounter.DayOfWeek,
+                        DayOfMonth = (int)dateCounter.Day,
+                        WeekOfMonth = (int)dateCounter.GetWeekOfMonth(),
+                        IsOutsideMonth = true
+                    };
+
+                    m.DayDataList.Add(d);
+                    dateCounter = dateCounter.AddDays(1);
+                }
+            }
+
+            
+
             string strong = "stronk";
 
             return m;

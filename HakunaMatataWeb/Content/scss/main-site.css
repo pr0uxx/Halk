@@ -6422,3 +6422,56 @@ table.squaretable {
   background-color: lightgrey;
   color: gray; }
 
+.front-page-jumbotron {
+  background-image: url(/Content/img/jumbo-horse.jpg);
+  background-position: 50% 14%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: white;
+  text-shadow: black 0.3em 0.3em 0.3em;
+  border-radius: 0;
+  padding: 0; }
+  .front-page-jumbotron .jumbotron-container {
+    background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.75));
+    margin: 10px, 2px;
+    padding: 1em; }
+
+footer {
+  background-image: url(/Content/img/jumbo-horse.jpg);
+  background-position: 4% 88%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-shadow: black 0.3em 0.3em 0.3em;
+  bottom: 0px;
+  padding: 0; }
+  footer .footer-container {
+    background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.75));
+    padding: 1em;
+    padding-top: 2em; }
+  footer h5 {
+    padding-left: 0px;
+    padding-bottom: 6px;
+    margin-bottom: 20px;
+    color: #ffffff;
+    text-shadow: black 0.3em 0.3em 0.3em; }
+  footer a {
+    color: #ffffff;
+    text-decoration: none !important;
+    background-color: transparent;
+    /*-webkit-text-decoration-skip: objects;*/ }
+  footer ul.quick-links li a {
+    color: #ffffff; }
+  footer ul.quick-links li {
+    padding: 3px 0;
+    -webkit-transition: .5s all ease-out;
+    -moz-transition: .5s all ease-out;
+    transition: .5s all ease-out; }
+  footer ul.quick-links li:hover {
+    padding: 3px 0;
+    margin-left: 5px;
+    font-weight: 700; }
+  footer ul.quick-links li a i {
+    margin-right: 5px; }
+  footer ul.quick-links li:hover a i {
+    font-weight: 700; }
+

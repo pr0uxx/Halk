@@ -15,13 +15,6 @@
 /* TEA'S CSS FOR INDEX PAGE - START*/
 /************************************/
 .jumbotron {
-	margin-bottom: 10px;
-	background-image: url(https://esosslfiles-a.akamaihd.net/cms/2015/08/25b4dbeb0c579bc7ac4cb0d85ecae88f.jpg);
-	background-position: 89% 50%;
-	background-size: cover;
-	background-repeat: no-repeat;
-	color: white;
-	text-shadow: black 0.3em 0.3em 0.3em;
 }
 .btn-eso {
 	color: #fff;
@@ -70,53 +63,7 @@ section {
 		text-shadow: black 0.3em 0.3em 0.3em;
 	}
 
-#footer {
-	background-image: url(https://esosslfiles-a.akamaihd.net/cms/2017/08/e1dbba28ad15256830dea92e5de8fa1a.jpg);
-	background-position: 4% 30%;
-	background-size: cover;
-	background-repeat: no-repeat;
-	text-shadow: black 0.3em 0.3em 0.3em;
-}
 
-	#footer h5 {
-		padding-left: 0px;
-		padding-bottom: 6px;
-		margin-bottom: 20px;
-		color: #ffffff;
-		text-shadow: black 0.3em 0.3em 0.3em;
-	}
-
-	#footer a {
-		color: #ffffff;
-		text-decoration: none !important;
-		background-color: transparent;
-		/*-webkit-text-decoration-skip: objects;*/
-	}
-
-		#footer ul.quick-links li a {
-			color: #ffffff;
-		}
-
-	#footer ul.quick-links li {
-		padding: 3px 0;
-		-webkit-transition: .5s all ease-out;
-		-moz-transition: .5s all ease-out;
-		transition: .5s all ease-out;
-	}
-
-		#footer ul.quick-links li:hover {
-			padding: 3px 0;
-			margin-left: 5px;
-			font-weight: 700;
-		}
-
-		#footer ul.quick-links li a i {
-			margin-right: 5px;
-		}
-
-		#footer ul.quick-links li:hover a i {
-			font-weight: 700;
-		}
 
 	/************************************/
 	/*** TEA'S CSS FOR footer - FINISH **/

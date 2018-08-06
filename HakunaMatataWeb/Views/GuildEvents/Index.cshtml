@@ -152,7 +152,7 @@
 						box.find('.dom').text(item.DayOfMonth);
 						if (item.IsOutsideMonth == true) {
 							box.addClass('disabled');
-							if (item.GuildEvents.length > 0) {
+							if (item.GuildEvents != null && item.GuildEvents.length > 0) {
 								box.find('.list-group-flush').empty();
 								$.each(item.GuildEvents, function (i, x) {
 									$(box.find('.list-group-flush')).append("<li class=\"list-group-item list-group-item-disabled\"><a href=\"GuildEvents/Details/\"" + x.Item2 + "\"")
@@ -184,18 +184,18 @@
 
 				});
 
-				if (daycount < (boxes.length + 1)) {
-					for (var i = 0; (i + daycount) < (boxes.length); i++) {
-						var box = $(boxes[(i + daycount)]);
-						box.addClass('disabled');
-						$(box.find('.list-group-flush')).empty();
-						$(box.find('.list-group-flush')).append("<li class=\"list-group-item list-group-item-disabled\">No Events</li>");
-						box.find('.dom').text(i + 1);
-					};
-				}
-				else {
-					console.log("Bad month dc: " + daycount + " bl+1:  " + (boxes.length + 1))
-				}
+				//if (daycount < (boxes.length + 1)) {
+				//	for (var i = 0; (i + daycount) < (boxes.length); i++) {
+				//		var box = $(boxes[(i + daycount)]);
+				//		box.addClass('disabled');
+				//		$(box.find('.list-group-flush')).empty();
+				//		$(box.find('.list-group-flush')).append("<li class=\"list-group-item list-group-item-disabled\">No Events</li>");
+				//		box.find('.dom').text(i + 1);
+				//	};
+				//}
+				//else {
+				//	console.log("Bad month dc: " + daycount + " bl+1:  " + (boxes.length + 1))
+				//}
 			});
 		}
 

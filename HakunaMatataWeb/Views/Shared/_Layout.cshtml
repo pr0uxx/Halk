@@ -74,10 +74,10 @@
 				}
 			</ul>
 
-			<form class="form-inline ml-auto my-2 my-lg-0">
+			@*<form class="form-inline ml-auto my-2 my-lg-0">
 				<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
 				<button class="btn-custom gradient-forest-green my-sm-0" type="submit">Search</button>
-			</form>
+			</form>*@
 			@Html.Partial("_LoginPartial")
 		</div>
 	</nav>
@@ -90,37 +90,39 @@
 	<!-- Footer -->
 
 
-	<footer id="footer" class="footer">
-		<div class="col-12">
-			<div class="row text-center text-xs-center text-sm-center text-md-center">
-				<div class="col-xs-12 col-sm-4 col-md-4">
-					<h5>Quick links</h5>
-					<ul class="list-unstyled quick-links">
-						<li><a href="#"><i class="fa fa-angle-double-right"></i>Home</a></li>
-						<li><a href="#"><i class="fa fa-angle-double-right"></i>About</a></li>
-						<li><a href="#"><i class="fa fa-angle-double-right"></i>FAQ</a></li>
-					</ul>
+	<footer>
+		<div class="footer-container">
+			<div class="col-12">
+				<div class="row text-center text-xs-center text-sm-center text-md-center">
+					<div class="col-xs-12 col-sm-4 col-md-4">
+						<h5>Quick links</h5>
+						<ul class="list-unstyled quick-links">
+							<li><a href="#"><i class="fa fa-angle-double-right"></i>Home</a></li>
+							<li><a href="#"><i class="fa fa-angle-double-right"></i>About</a></li>
+							<li><a href="#"><i class="fa fa-angle-double-right"></i>FAQ</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-12 col-sm-4 col-md-4">
+						<h5>Quick links</h5>
+						<ul class="list-unstyled quick-links">
+							<li><a href="#"><i class="fa fa-angle-double-right"></i>Home</a></li>
+							<li><a href="#"><i class="fa fa-angle-double-right"></i>About</a></li>
+							<li><a href="#"><i class="fa fa-angle-double-right"></i>FAQ</a></li>
+						</ul>
+					</div>
+					<div class="col-xs-12 col-sm-4 col-md-4">
+						<h5>Quick links</h5>
+						<ul class="list-unstyled quick-links">
+							<li><a href="@Url.Action("About", "Home")"><i class="fa fa-angle-double-right"></i>About</a></li>
+							<li><a href="@Url.Action("Index", "Home")"><i class="fa fa-angle-double-right"></i>Home</a></li>
+							<li><a href="@Url.Action("Contact", "Home")"><i class="fa fa-angle-double-right"></i>Contact</a></li>
+						</ul>
+					</div>
 				</div>
-				<div class="col-xs-12 col-sm-4 col-md-4">
-					<h5>Quick links</h5>
-					<ul class="list-unstyled quick-links">
-						<li><a href="#"><i class="fa fa-angle-double-right"></i>Home</a></li>
-						<li><a href="#"><i class="fa fa-angle-double-right"></i>About</a></li>
-						<li><a href="#"><i class="fa fa-angle-double-right"></i>FAQ</a></li>
-					</ul>
-				</div>
-				<div class="col-xs-12 col-sm-4 col-md-4">
-					<h5>Quick links</h5>
-					<ul class="list-unstyled quick-links">
-						<li><a href="@Url.Action("About", "Home")"><i class="fa fa-angle-double-right"></i>About</a></li>
-						<li><a href="@Url.Action("Index", "Home")"><i class="fa fa-angle-double-right"></i>Home</a></li>
-						<li><a href="@Url.Action("Contact", "Home")"><i class="fa fa-angle-double-right"></i>Contact</a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
-					<p class="h6">&copy; @DateTime.Now.Year - M.Howard. All rights reserved</p>
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
+						<p class="h6">&copy; @DateTime.Now.Year - M.Howard. All rights reserved</p>
+					</div>
 				</div>
 			</div>
 		</div>

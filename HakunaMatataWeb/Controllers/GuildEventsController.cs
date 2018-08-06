@@ -78,48 +78,48 @@ namespace HakunaMatataWeb.Controllers
             return View(m);
         }
 
-        private List<DayData> StandardiseDayData(List<DayData> data, DateTime firstDay, DateTime lastDay)
-        {
-            int fd = (int)firstDay.DayOfWeek;
+        //private List<DayData> StandardiseDayData(List<DayData> data, DateTime firstDay, DateTime lastDay)
+        //{
+        //    int fd = (int)firstDay.DayOfWeek;
 
-            if (fd != 1)
-            {
-                int dif = fd - 1;
+        //    if (fd != 1)
+        //    {
+        //        int dif = fd - 1;
 
-                //correct for sundays
-                if (dif == -1)
-                {
-                    dif = 6;
-                }
+        //        //correct for sundays
+        //        if (dif == -1)
+        //        {
+        //            dif = 6;
+        //        }
 
-                var l = new List<DayData>();
+        //        var l = new List<DayData>();
 
-                for (int i = 0; i < dif; i++)
-                {
-                    DayOfWeek dayOfWeek = (DayOfWeek)(fd);
-                    var ds = firstDay.AddDays(-(dif - i + 1)).DayOfWeek.ToString();
+        //        for (int i = 0; i < dif; i++)
+        //        {
+        //            DayOfWeek dayOfWeek = (DayOfWeek)(fd);
+        //            var ds = firstDay.AddDays(-(dif - i + 1)).DayOfWeek.ToString();
 
-                    var thisDay = firstDay.AddDays(-(dif - i));
+        //            var thisDay = firstDay.AddDays(-(dif - i));
 
-                    var d = new DayData()
-                    {
-                        Date = thisDay,
-                        DayName = thisDay.DayOfWeek.ToString(),
-                        DayOfMonth = thisDay.Day,
-                        DayOfWeek = (int)thisDay.DayOfWeek,
-                        GuildEvents = new List<Tuple<string, int, string>>(),
-                        IsOutsideMonth = true,
-                        WeekOfMonth = (int)thisDay.GetWeekOfMonth()
-                    };
+        //            var d = new DayData()
+        //            {
+        //                Date = thisDay,
+        //                DayName = thisDay.DayOfWeek.ToString(),
+        //                DayOfMonth = thisDay.Day,
+        //                DayOfWeek = (int)thisDay.DayOfWeek,
+        //                GuildEvents = new List<Tuple<string, int, string>>(),
+        //                IsOutsideMonth = true,
+        //                WeekOfMonth = (int)thisDay.GetWeekOfMonth()
+        //            };
 
-                    l.Add(d);
-                }
+        //            l.Add(d);
+        //        }
 
-                data.InsertRange(0, l);
-            }
+        //        data.InsertRange(0, l);
+        //    }
 
-            return data;
-        }
+        //    return data;
+        //}
 
         public async Task<ActionResult> Administrate()
         {
