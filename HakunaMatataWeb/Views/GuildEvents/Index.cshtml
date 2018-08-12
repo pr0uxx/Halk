@@ -12,6 +12,10 @@
 		width: calc(100% * (1/7) - 10px - 1px);
 	}
 
+	.text-light {
+		color: #fff;
+	}
+
 	.calendar-content {
 	}
 
@@ -31,123 +35,208 @@
 	}
 </style>
 </div>
-
-<table class="table table-bordered squaretable">
-	<thead>
-		<tr>
-			<th class="text-center" colspan="7">
-				<h2>Guild Event Calendar</h2>
-				<h3><span id="this-month" data-value="@Model.Month">@Model.MonthString</span> <span id="this-year">@Model.Year</span> </h3>
-				<a id="page-left" class="btn-custom gradient-forest-green float-left mr-4">Last Month</a>
-				<a id="page-right" class="btn-custom gradient-forest-green float-left">Next Month</a>
-				<a id="table-theme" class="btn-custom gradient-forest-green float-right">Switch Table Theme</a>
-			</th>
-		</tr>
-		<tr>
-			<th scope="col">Monday</th>
-			<th scope="col">Tuesday</th>
-			<th scope="col">Wednesday</th>
-			<th scope="col">Thursday</th>
-			<th scope="col">Friday</th>
-			<th scope="col">Saturday</th>
-			<th scope="col">Sunday</th>
-		</tr>
-	</thead>
-	<tbody>
+<div class="text-center">
+	<h2 id="cal-title">Guild Event Calendar</h2>
+	<h3><span id="this-month" data-value="@Model.Month">@Model.MonthString</span> <span id="this-year">@Model.Year</span> </h3>
+</div>
+<div class="d-lg-none container-fluid">
+	<header>
+		<div class="row d-flex justify-content-center p-1 text-white">
+			<a id="page-left-small" class="btn-custom gradient-forest-green m-auto">Last Month</a>
+			<a id="page-right-small" class="btn-custom gradient-forest-green m-auto">Next Month</a>
+		</div>
+	</header>
+	<div class="row border border-right-0 border-bottom-0 small-calendar">
 		@foreach (var x in Model.DayDataList)
 		{
-			if (Model.DayDataList.IndexOf(x) == 0)
+			if (!x.IsOutsideMonth)
 			{
-				@:<tr>
-				}
-				if (x.IsOutsideMonth)
-				{
-					<td class="disabled">
-						<span class="dom">@x.DayOfMonth</span>
-						<div class="col-12">
-							<ul class="list-group list-group-flush">
-								@if (x.GuildEvents != null && x.GuildEvents.Count > 0)
+				<div class="day col-sm-12 p-2 border ml-4 mr-4 border-left-0 border-top-0 text-truncate ">
+					<h5 class="row align-items-center">
+						<span class="date col-1">@x.DayOfMonth</span>
+						<small class="col text-center text-muted">@x.DayName</small>
+						<span class="col-1"></span>
+					</h5>
+					<p class="d-sm-none">
+						<ul class="list-group list-group-flush">
+							@if (x.GuildEvents != null && x.GuildEvents.Count > 0)
+							{
+								foreach (var ge in x.GuildEvents)
 								{
-									foreach (var ge in x.GuildEvents)
+
+									<li class="list-group-item list-group-item-dark btn-calendar @ge.Item3" onclick="location.href = '@Url.Action("Details", new { id = ge.Item2 })'">@Html.ActionLink(ge.Item1, "Details", new { id = ge.Item2 })</li>
+									if (x.GuildEvents.IndexOf(ge) == 3)
 									{
-										<li class="list-group-item list-group-item-disabled">@Html.ActionLink(ge.Item1, "Details", new { id = ge.Item2 })</li>
-										if (x.GuildEvents.IndexOf(ge) == 3)
-										{
-											<li class="list-group-item">
-												<a class="day-events">All Events</a>
-											</li>
-											break;
-										}
+										<li class="list-group-item">
+											<span class="day-events">All Events</span>
+										</li>
+										break;
 									}
 								}
-								else
-								{
-									<li class="list-group-item list-group-item-disabled">No Events</li>
-								}
-							</ul>
-						</div>
-					</td>
-				}
-				else
-				{
-					<td>
-						<span class="dom">@x.DayOfMonth</span>
-						<div class="col-12">
-							<ul class="list-group list-group-flush">
-								@if (x.GuildEvents != null && x.GuildEvents.Count > 0)
-								{
-									foreach (var ge in x.GuildEvents)
-									{
-
-										<li class="list-group-item list-group-item-dark btn-calendar @ge.Item3" onclick="location.href = '@Url.Action("Details", new { id = ge.Item2 })'">@Html.ActionLink(ge.Item1, "Details", new { id = ge.Item2 })</li>
-										if (x.GuildEvents.IndexOf(ge) == 3)
-										{
-											<li class="list-group-item">
-												<span class="day-events">All Events</span>
-											</li>
-											break;
-										}
-									}
-								}
-								else
-								{
-									<li class="list-group-item  list-group-item-dark list-group-item-disabled-dark">No Events</li>
-								}
-							</ul>
-						</div>
-					</td>
-				}
-
-				if (Model.DayDataList.IndexOf(x) == Model.DayDataList.Count - 1)
-				{
-				@:</tr>
+							}
+						</ul>
+					</p>
+				</div>
 			}
 
-			else if ((Model.DayDataList.IndexOf(x) + 1) % 7 == 0)
-			{
-				@:</tr>
-			}
 		}
-	</tbody>
-</table>
+	</div>
+</div>
+
+<div class="scale-responsive">
+	<div class="responsive-content">
+		<table class="table table-bordered squaretable d-none d-lg-table">
+			<thead>
+				<tr>
+					<th class="text-center" colspan="7">
+						<a id="page-left" class="btn-custom gradient-forest-green float-left mr-4">Last Month</a>
+						<a id="page-right" class="btn-custom gradient-forest-green float-left">Next Month</a>
+						<a id="table-theme" class="btn-custom gradient-forest-green float-right">Switch Table Theme</a>
+					</th>
+				</tr>
+				<tr class="d-md-table-row d-none">
+					<th scope="col">Monday</th>c   
+					<th scope="col">Tuesday</th>
+					<th scope="col">Wednesday</th>
+					<th scope="col">Thursday</th>
+					<th scope="col">Friday</th>
+					<th scope="col">Saturday</th>
+					<th scope="col">Sunday</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var x in Model.DayDataList)
+				{
+					if (Model.DayDataList.IndexOf(x) == 0)
+					{
+						@:<tr>
+						}
+						if (x.IsOutsideMonth)
+						{
+							<td class="disabled">
+								<span class="dom">@x.DayOfMonth</span>
+								<div class="col-12">
+									<ul class="list-group list-group-flush">
+										@if (x.GuildEvents != null && x.GuildEvents.Count > 0)
+										{
+											foreach (var ge in x.GuildEvents)
+											{
+												<li class="list-group-item list-group-item-disabled">@Html.ActionLink(ge.Item1, "Details", new { id = ge.Item2 })</li>
+												if (x.GuildEvents.IndexOf(ge) == 3)
+												{
+													<li class="list-group-item">
+														<a class="day-events">All Events</a>
+													</li>
+													break;
+												}
+											}
+										}
+										else
+										{
+											<li class="list-group-item list-group-item-disabled">No Events</li>
+										}
+									</ul>
+								</div>
+							</td>
+						}
+						else
+						{
+							<td>
+								<span class="dom">@x.DayOfMonth</span>
+								<div class="col-12">
+									<ul class="list-group list-group-flush">
+										@if (x.GuildEvents != null && x.GuildEvents.Count > 0)
+										{
+											foreach (var ge in x.GuildEvents)
+											{
+
+												<li class="list-group-item list-group-item-dark btn-calendar @ge.Item3" onclick="location.href = '@Url.Action("Details", new { id = ge.Item2 })'">@Html.ActionLink(ge.Item1, "Details", new { id = ge.Item2 })</li>
+												if (x.GuildEvents.IndexOf(ge) == 3)
+												{
+													<li class="list-group-item">
+														<span class="day-events">All Events</span>
+													</li>
+													break;
+												}
+											}
+										}
+										else
+										{
+											<li class="list-group-item  list-group-item-dark list-group-item-disabled-dark d-none d-md-block">No Events</li>
+										}
+									</ul>
+								</div>
+							</td>
+						}
+
+						if (Model.DayDataList.IndexOf(x) == Model.DayDataList.Count - 1)
+						{
+						@:</tr>
+					}
+
+					else if ((Model.DayDataList.IndexOf(x) + 1) % 7 == 0)
+					{
+						@:</tr>
+					}
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
 
 @section Scripts {
 	<script>
 		$('#table-theme').on('click', function (e) {
-			$('table').toggleClass('table-dark')
+			$('table').toggleClass('table-dark');
+			$('main').toggleClass('bg-dark');
+			$('#this-month, #this-year, #cal-title').toggleClass('text-light');
 		})
 
+		function buildSmallDay(day) {
+			var topDiv = $(document.createElement('div')).addClass('day col-sm-12 p-2 border ml-4 mr-4 border-left-0 border-top-0 text-truncate ');
+			var header = $(document.createElement('h5')).addClass('row align-items-center');
+			var span1 =  $(document.createElement('span')).addClass('date col-1').html(day.DayOfMonth);
+			var small = $(document.createElement('small')).addClass('col text-center text-muted').html(day.DayName);
+			var span2 =  $(document.createElement('span')).addClass('col1');
+
+			header.append(span1);
+			header.append(small);
+			header.append(span2);
+			topDiv.append(header);
+
+			var para = $(document.createElement('p')).addClass('d-sm-noone');
+			var list = $(document.createElement('ul')).addClass('list-group list-group-flush');
+			if (day.GuildEvents != null && day.GuildEvents.length > 0) {
+				$.each(day.GuildEvents, function (i, val) {					
+					list.append("<li class=\"list-group-item list-group-item-dark btn-calendar " + val.Item3 + "\" onclick=\"location.href = \'GuildEvents/Details/" + val.Item2 + "'\"><a href=\"GuildEvents/Details/" + val.Item2 + "\">" + val.Item1 + "</a></li>");
+				})
+			}
+			else {
+				var li = $(document.createElement('li')).addClass('list-group-item list-group-item-disabled').html('No Events');
+			}
+			para.append(list);
+			topDiv.append(para);
+
+			return topDiv;
+		}
+
 		function redrawTable(Month, Year) {
+
 			$.getJSON("/GuildEvents/GetMonthGuildEvents?month=" + Month + "&year=" + Year, function (data) {
 				testData = data;
 				var boxes = $("table td");
+				var smallBoxes = $(".small-calendar");
+				smallBoxes.html('');
 				$('#this-month').attr("data-value", data.Month);
 				$('#this-month').text(data.MonthString);
 				$('#this-year').text(data.Year);
+				
 				var daycount = 0;
 				$.each(data.DayDataList, function (i, item) {
 					daycount++;
 					var box = $(boxes[i]);
+					
+					
 					if (box != null) {
 						box.find('.dom').text(item.DayOfMonth);
 						if (item.IsOutsideMonth == true) {
@@ -164,12 +253,20 @@
 							}
 						}
 						else {
+							smallBoxes.append(buildSmallDay(item));
 							box.removeClass('disabled');
-							if (item.GuildEvents.length > 0) {
-								box.find('.list-group-flush').empty();
-								$.each(item.GuildEvents, function (i, x) {
-									$(box.find('.list-group-flush')).append("<li class=\"list-group-item list-group-item-dark btn-calendar " + x.Item3 + "\" onclick=\"location.href = \'GuildEvents/Details/" + x.Item2 + "'\"><a href=\"GuildEvents/Details/" + x.Item2 + "\">" + x.Item1 + "</a></li>");
-								})
+							if (item.GuildEvents != null) {
+								if (item.GuildEvents.length > 0) {
+									box.find('.list-group-flush').empty();
+									$.each(item.GuildEvents, function (i, x) {
+										$(box.find('.list-group-flush')).append("<li class=\"list-group-item list-group-item-dark btn-calendar " + x.Item3 + "\" onclick=\"location.href = \'GuildEvents/Details/" + x.Item2 + "'\"><a href=\"GuildEvents/Details/" + x.Item2 + "\">" + x.Item1 + "</a></li>");
+									})
+								}
+								else {
+									$(box.find('.list-group-flush')).empty();
+									$(box.find('.list-group-flush')).append("<li class=\"list-group-item list-group-item-disabled\">No Events</li>");
+
+								}
 							}
 							else {
 								$(box.find('.list-group-flush')).empty();
@@ -184,23 +281,12 @@
 
 				});
 
-				//if (daycount < (boxes.length + 1)) {
-				//	for (var i = 0; (i + daycount) < (boxes.length); i++) {
-				//		var box = $(boxes[(i + daycount)]);
-				//		box.addClass('disabled');
-				//		$(box.find('.list-group-flush')).empty();
-				//		$(box.find('.list-group-flush')).append("<li class=\"list-group-item list-group-item-disabled\">No Events</li>");
-				//		box.find('.dom').text(i + 1);
-				//	};
-				//}
-				//else {
-				//	console.log("Bad month dc: " + daycount + " bl+1:  " + (boxes.length + 1))
-				//}
+
 			});
 		}
 
 		//previous month
-		$('#page-left').on('click', function (e) {
+		$('#page-left, #page-left-small').on('click', function (e) {
 			var Month = +($('#this-month').attr("data-value")) - 1;
 			var Year = parseInt($('#this-year').text(), 10);
 			console.log(Year);
@@ -213,7 +299,7 @@
 		});
 
 		//next month
-		$('#page-right').on('click', function (e) {
+		$('#page-right, #page-right-small').on('click', function (e) {
 			var Month = +($('#this-month').attr("data-value")) + 1;
 			var Year = +($('#this-year').text());
 			if (Month == 13) {

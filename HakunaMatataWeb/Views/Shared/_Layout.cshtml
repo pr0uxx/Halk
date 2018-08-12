@@ -6,91 +6,94 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>@ViewBag.Title</title>
 	@Styles.Render("~/Content/css")
-	@Scripts.Render("~/bundles/modernizr")
+
 	<style>
 	</style>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-dark gradient-blue-black">
-		@Html.ActionLink("Hakuna Matata", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "navbar-brand" })
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
 
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav mr-auto">
-				@if (User.GetClaimValueString(HakunaMatataWeb.Data.Enums.CustomClaims.SiteRank.ToString()).Equals("Developer"))
-				{
-					<li class="nav-item">@Html.ActionLink("Admin", "AdministerUsers", "Admin", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
-				}
-				@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Enums.GuildRank>() > 2)
-				{
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Guild Events
-						</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							@Html.ActionLink("Events", "Index", "GuildEvents", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
-							<div class="dropdown-divider"></div>
-							@Html.ActionLink("Adminstrate", "Administrate", "GuildEvents", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
-							@Html.ActionLink("Create Event", "Create", "GuildEvents", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
-						</div>
-					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							ESO Guides
-						</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							@Html.ActionLink("Guides", "Guides", "ESOGuide", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
-							<div class="dropdown-divider"></div>
-							@Html.ActionLink("Guides List", "Index", "ESOGuide", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
-							@Html.ActionLink("Create Guide", "Create", "ESOGuide", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
-						</div>
-					</li>
-				}
-				else
-				{
-					<li class="nav-item">@Html.ActionLink("Guild Events", "Index", "GuildEvents", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
-					<li class="nav-item">@Html.ActionLink("ESO Guides", "Guides", "ESOGuide", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
-				}
+		<nav class="navbar navbar-expand-lg navbar-dark gradient-blue-black">
+			@Html.ActionLink("Hakuna Matata", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "navbar-brand" })
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
 
-				@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Enums.SiteRank>() > 2)
-				{
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							News
-						</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							@Html.ActionLink("News", "Index", "News", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
-							<div class="dropdown-divider"></div>
-							@Html.ActionLink("Administrate", "Administrate", "News", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
-							@Html.ActionLink("Create", "Create", "News", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
-						</div>
-					</li>
-				}
-				else
-				{
-					<li class="nav-item">@Html.ActionLink("News", "Index", "News", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
-				}
-			</ul>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					@if (User.GetClaimValueString(HakunaMatataWeb.Data.Enums.CustomClaims.SiteRank.ToString()).Equals("Developer"))
+					{
+						<li class="nav-item">@Html.ActionLink("Admin", "AdministerUsers", "Admin", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
+					}
+					@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Enums.GuildRank>() > 2)
+					{
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Guild Events
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								@Html.ActionLink("Events", "Index", "GuildEvents", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+								<div class="dropdown-divider"></div>
+								@Html.ActionLink("Adminstrate", "Administrate", "GuildEvents", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+								@Html.ActionLink("Create Event", "Create", "GuildEvents", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+							</div>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								ESO Guides
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								@Html.ActionLink("Guides", "Guides", "ESOGuide", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+								<div class="dropdown-divider"></div>
+								@Html.ActionLink("Guides List", "Index", "ESOGuide", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+								@Html.ActionLink("Create Guide", "Create", "ESOGuide", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+							</div>
+						</li>
+					}
+					else
+					{
+						<li class="nav-item">@Html.ActionLink("Guild Events", "Index", "GuildEvents", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
+						<li class="nav-item">@Html.ActionLink("ESO Guides", "Guides", "ESOGuide", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
+					}
 
-			@*<form class="form-inline ml-auto my-2 my-lg-0">
-				<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-				<button class="btn-custom gradient-forest-green my-sm-0" type="submit">Search</button>
-			</form>*@
-			@Html.Partial("_LoginPartial")
-		</div>
-	</nav>
-	<main role="main">
-	<div class="container-fluid body-content">
-		@RenderBody()
-	</div>
-	</main>
+					@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Enums.SiteRank>() > 2)
+					{
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								News
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								@Html.ActionLink("News", "Index", "News", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+								<div class="dropdown-divider"></div>
+								@Html.ActionLink("Administrate", "Administrate", "News", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+								@Html.ActionLink("Create", "Create", "News", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+							</div>
+						</li>
+					}
+					else
+					{
+						<li class="nav-item">@Html.ActionLink("News", "Index", "News", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
+					}
+				</ul>
+
+				@*<form class="form-inline ml-auto my-2 my-lg-0">
+						<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+						<button class="btn-custom gradient-forest-green my-sm-0" type="submit">Search</button>
+					</form>*@
+				@Html.Partial("_LoginPartial")
+			</div>
+		</nav>
+
+		<main role="main">
+			<div class="container-fluid body-content">
+				@RenderBody()
+			</div>
+		</main>
+
 	<!--FOOTER-->
 	<!-- Footer -->
 
 
-	<footer>
+	<footer class="gradient-blue-black">
 		<div class="footer-container">
 			<div class="col-12">
 				<div class="row text-center text-xs-center text-sm-center text-md-center">
@@ -132,6 +135,8 @@
 
 	@Scripts.Render("~/bundles/jquery")
 	@Scripts.Render("~/bundles/bootstrap")
+	@Scripts.Render("~/bundles/modernizr")
+	@Scripts.Render("~/bundles/Fonts")
 	@RenderSection("scripts", required: false)
 </body>
 </html>

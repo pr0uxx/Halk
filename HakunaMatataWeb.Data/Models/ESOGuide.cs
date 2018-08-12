@@ -8,7 +8,7 @@ namespace HakunaMatataWeb.Data.Models
     public class ESOGuide
     {
         public int EsoGuideId { get; set; }
-        public EventType GuideType { get; set; }
+        public GuideType GuideType { get; set; }
 
         [StringLength(30, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 3)]
         public string Title { get; set; }

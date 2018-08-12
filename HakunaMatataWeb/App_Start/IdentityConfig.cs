@@ -5,20 +5,65 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
+using SendGrid;
 using System;
+using System.Configuration;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using SendGrid.Helpers.Mail;
 
 namespace HakunaMatataWeb
 {
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+        public async Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            await configSendGridAsync(message);
+        }
+
+        private async Task configSendGridAsync(IdentityMessage message)
+        {
+            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY") ?? ConfigurationManager.AppSettings["SENDGRID_API_KEY"];
+            if (apiKey == null)
+            {
+                logger.Error("No key found for sendgrid API!");
+                await Task.FromResult(0);
+            }
+            var client = new SendGridClient(apiKey);
+
+            var to = new EmailAddress(message.Destination);
+            var from = new EmailAddress("noreply@hkguild.webnotts.uk", "Hakuna Matata NoReply");
+            var msg = MailHelper.CreateSingleEmail(from, to, message.Subject, message.Body, message.Body);
+
+            if (msg != null)
+            {
+                logger.Trace("Sending account email via sendgrid to email {0}", message.Destination);
+                var result = await client.SendEmailAsync(msg);
+                if (result.StatusCode.Equals(HttpStatusCode.Accepted))
+                {
+                    logger.Trace("Email sent!");
+                    await Task.FromResult(result);
+                }
+                else
+                {
+                    logger.Error("Failed to send email to {0}. Error details: {1}||{2}||{3}", message.Destination, result.StatusCode, result.Headers, result.Body);
+                    await Task.FromResult(result);
+                }
+            }
+            else
+            {
+                logger.Error("Failed to create sendgrid message");
+                await Task.FromResult(0);
+            }
         }
     }
+
+    
 
     public class SmsService : IIdentityMessageService
     {

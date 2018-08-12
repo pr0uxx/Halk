@@ -16,12 +16,14 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using HakunaMatataWeb.Services.GuildEventServices;
 using System.Security.Principal;
+using System.Diagnostics;
 
 namespace HakunaMatataWeb.Controllers
 {
     [AuthorizeGuildRank(GuildRank.EventMaster)]
     public class GuildEventsController : Controller
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         private ApplicationDbContext db = new ApplicationDbContext();
         private IGuildEventService eventService;
 
@@ -66,6 +68,9 @@ namespace HakunaMatataWeb.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Index()
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            logger.Trace("Index method hit");
             var now = DateTime.Now;
             var firstDayOfMonth = new DateTime(now.Year, now.Month, 1);
             var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
@@ -74,7 +79,8 @@ namespace HakunaMatataWeb.Controllers
             m = await eventService.GetMonthEventCalendarAsync(now.Month, now.Year, localTimeZone); 
 
             string strong = "stronk";
-
+            sw.Stop();
+            logger.Trace(string.Concat("Index method runs in: ", sw.ElapsedMilliseconds, " ms."));
             return View(m);
         }
 

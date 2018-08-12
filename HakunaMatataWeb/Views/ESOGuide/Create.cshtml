@@ -48,15 +48,28 @@
 				</div>
 			</div>
 		</div>
-		<div class="w-100 pt-4">
-			<div class="form-group">
-				@Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "col-2" })
-				<div class="col-md-12">
-					@Html.TextAreaFor(model => model.Content, new { @class = "form-control", rows = "10", cols = "20", wrap = "hard" })
-					@Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+		<div class="row">
+			<div class="col-md-6 col-12 pt-4">
+				<div class="form-group">
+					@Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "col-2" })
+					<div class="col-md-12">
+						@Html.TextAreaFor(model => model.Content, new { @class = "form-control", rows = "10", cols = "20", wrap = "hard", style = "height:584px;" })
+						@Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+					</div>
 				</div>
 			</div>
+			<div class="col-12 col-md-6 pt-4 pr-4 ">
+				<h4>Markdown Cheatsheet</h4>
+				<hr />
+				<div class="markdown-partial">
+					
+
+					@Html.Partial("_MarkdownGuide")
+				</div>
+
+			</div>
 		</div>
+
 		<div class="well col-12" id="preview-pane">
 		</div>
 		<div class="col-12">
@@ -73,7 +86,7 @@
 	</div>
 
 	@section scripts
-{
+	{
 		<script type="text/javascript" src="~/Scripts/MarkdownConverter.js"></script>
 	}
 </body>

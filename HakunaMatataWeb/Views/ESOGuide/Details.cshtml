@@ -7,6 +7,11 @@
 <head>
 	<meta name="viewport" content="width=device-width" />
 	<title>Details</title>
+	<style>
+		img {
+			max-width: 600px;
+		}
+	</style>
 </head>
 <body>
 	@*<div>
@@ -70,10 +75,10 @@
 				</dd>
 			</dl>
 		</div>*@
-	<div class="container">
+	<div class="container mt-4">
 		@Html.Raw(Model.ContentHtml)
 	</div>
-	<p>
+	<div class="pl-4 pb-4">
 
 		@if (User.GetClaimValueInt<HakunaMatataWeb.Data.Enums.GuildRank>() > 2)
 		{
@@ -85,8 +90,11 @@
 		}
 		else
 		{
-			@Html.ActionLink("ESO Guides", "Guides", "ESOGuide");
+			@Html.ActionLink("Back to guides", "Guides", "ESOGuide", new { @class = "btn btn-custom gradient-forest-green"});
 		}
-	</p>
+	</div>
 </body>
 </html>
+<script>
+	$('img').addClass("img-fluid");
+</script>

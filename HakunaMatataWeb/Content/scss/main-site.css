@@ -1,4 +1,1052 @@
-﻿/*!
+﻿/*= input focus effects css
+=========================== */
+:focus {
+  outline: none; }
+
+/* necessary to give position: relative to parent. */
+input[type="text"], input[type="password"] {
+  font: 15px/24px "Lato", Arial, sans-serif;
+  color: #333;
+  width: 100%;
+  box-sizing: border-box;
+  letter-spacing: 1px; }
+
+.effect-1, .effect-2, .effect-3 {
+  border: 0;
+  padding: 7px 0;
+  border-bottom: 1px solid #ccc; }
+
+.effect-1 ~ .focus-border {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #3399FF;
+  transition: 0.4s; }
+
+.effect-1:focus ~ .focus-border {
+  width: 100%;
+  transition: 0.4s; }
+
+.effect-2 ~ .focus-border {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #3399FF;
+  transition: 0.4s; }
+
+.effect-2:focus ~ .focus-border {
+  width: 100%;
+  transition: 0.4s;
+  left: 0; }
+
+.effect-3 ~ .focus-border {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  z-index: 99; }
+  .effect-3 ~ .focus-border:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: #3399FF;
+    transition: 0.4s; }
+  .effect-3 ~ .focus-border:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: #3399FF;
+    transition: 0.4s;
+    left: auto;
+    right: 0; }
+
+.effect-3:focus ~ .focus-border:before, .effect-3:focus ~ .focus-border:after {
+  width: 50%;
+  transition: 0.4s; }
+
+.effect-4, .effect-5, .effect-6 {
+  border: 0;
+  padding: 5px 0 7px;
+  border: 1px solid transparent;
+  border-bottom-color: #ccc;
+  transition: 0.4s; }
+
+.effect-4:focus, .effect-5:focus, .effect-6:focus {
+  padding: 5px 14px 7px;
+  transition: 0.4s; }
+
+.effect-4 ~ .focus-border {
+  position: absolute;
+  height: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  transition: 0.4s;
+  z-index: -1; }
+
+.effect-4:focus ~ .focus-border {
+  transition: 0.4s;
+  height: 36px;
+  border: 2px solid #3399FF;
+  z-index: 1; }
+
+.effect-5 ~ .focus-border {
+  position: absolute;
+  height: 36px;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  transition: 0.4s; }
+
+.effect-5:focus ~ .focus-border {
+  width: 100%;
+  transition: 0.4s;
+  border: 2px solid #3399FF; }
+
+.effect-6 ~ .focus-border {
+  position: absolute;
+  height: 36px;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  transition: 0.4s; }
+
+.effect-6:focus ~ .focus-border {
+  width: 100%;
+  transition: 0.4s;
+  border: 2px solid #3399FF; }
+
+.effect-7, .effect-8, .effect-9 {
+  border: 1px solid #ccc;
+  padding: 7px 14px 9px;
+  transition: 0.4s; }
+
+.effect-7 ~ .focus-border:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #3399FF;
+  transition: 0.4s; }
+
+.effect-7 ~ .focus-border:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #3399FF;
+  transition: 0.4s;
+  top: auto;
+  bottom: 0; }
+
+.effect-7 ~ .focus-border i:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background-color: #3399FF;
+  transition: 0.6s; }
+
+.effect-7 ~ .focus-border i:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background-color: #3399FF;
+  transition: 0.6s;
+  left: auto;
+  right: 0; }
+
+.effect-7:focus ~ .focus-border:before, .effect-7:focus ~ .focus-border:after {
+  left: 0;
+  width: 100%;
+  transition: 0.4s; }
+
+.effect-7:focus ~ .focus-border i:before, .effect-7:focus ~ .focus-border i:after {
+  top: 0;
+  height: 100%;
+  transition: 0.6s; }
+
+.effect-8 ~ .focus-border:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #3399FF;
+  transition: 0.3s; }
+
+.effect-8 ~ .focus-border:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #3399FF;
+  transition: 0.3s;
+  top: auto;
+  bottom: 0;
+  left: auto;
+  right: 0; }
+
+.effect-8 ~ .focus-border i:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background-color: #3399FF;
+  transition: 0.4s; }
+
+.effect-8 ~ .focus-border i:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background-color: #3399FF;
+  transition: 0.4s;
+  left: auto;
+  right: 0;
+  top: auto;
+  bottom: 0; }
+
+.effect-8:focus ~ .focus-border:before, .effect-8:focus ~ .focus-border:after {
+  width: 100%;
+  transition: 0.3s; }
+
+.effect-8:focus ~ .focus-border i:before, .effect-8:focus ~ .focus-border i:after {
+  height: 100%;
+  transition: 0.4s; }
+
+.effect-9 ~ .focus-border:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 2px;
+  background-color: #3399FF;
+  transition: 0.2s;
+  transition-delay: 0.2s; }
+
+.effect-9 ~ .focus-border:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 2px;
+  background-color: #3399FF;
+  transition: 0.2s;
+  transition-delay: 0.2s;
+  top: auto;
+  bottom: 0;
+  right: auto;
+  left: 0;
+  transition-delay: 0.6s; }
+
+.effect-9 ~ .focus-border i:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background-color: #3399FF;
+  transition: 0.2s; }
+
+.effect-9 ~ .focus-border i:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background-color: #3399FF;
+  transition: 0.2s;
+  left: auto;
+  right: 0;
+  top: auto;
+  bottom: 0;
+  transition-delay: 0.4s; }
+
+.effect-9:focus ~ .focus-border:before {
+  width: 100%;
+  transition: 0.2s;
+  transition-delay: 0.6s; }
+
+.effect-9:focus ~ .focus-border:after {
+  width: 100%;
+  transition: 0.2s;
+  transition-delay: 0.6s;
+  transition-delay: 0.2s; }
+
+.effect-9:focus ~ .focus-border i:before {
+  height: 100%;
+  transition: 0.2s; }
+
+.effect-9:focus ~ .focus-border i:after {
+  height: 100%;
+  transition: 0.2s;
+  transition-delay: 0.4s; }
+
+.effect-10, .effect-11, .effect-12, .effect-13, .effect-14, .effect-15 {
+  border: 0;
+  padding: 7px 15px;
+  border: 1px solid #ccc;
+  position: relative;
+  background: transparent; }
+
+.effect-10 ~ .focus-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ededed;
+  opacity: 0;
+  transition: 0.5s;
+  z-index: -1; }
+
+.effect-10:focus ~ .focus-bg {
+  transition: 0.5s;
+  opacity: 1; }
+
+.effect-11 ~ .focus-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 100%;
+  background-color: #ededed;
+  transition: 0.3s;
+  z-index: -1; }
+
+.effect-11:focus ~ .focus-bg {
+  transition: 0.3s;
+  width: 100%; }
+
+.effect-12 ~ .focus-bg {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 0;
+  height: 100%;
+  background-color: #ededed;
+  transition: 0.3s;
+  z-index: -1; }
+
+.effect-12:focus ~ .focus-bg {
+  transition: 0.3s;
+  width: 100%;
+  left: 0; }
+
+.effect-13 ~ .focus-bg:before, .effect-13 ~ .focus-bg:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 100%;
+  background-color: #ededed;
+  transition: 0.3s;
+  z-index: -1; }
+
+.effect-13:focus ~ .focus-bg:before, .effect-13:focus ~ .focus-bg:after {
+  transition: 0.3s;
+  width: 50%; }
+
+.effect-13 ~ .focus-bg:after {
+  left: auto;
+  right: 0; }
+
+.effect-14 ~ .focus-bg:before, .effect-14 ~ .focus-bg:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  background-color: #ededed;
+  transition: 0.3s;
+  z-index: -1; }
+
+.effect-14:focus ~ .focus-bg:before, .effect-14:focus ~ .focus-bg:after {
+  transition: 0.3s;
+  width: 50%;
+  height: 100%; }
+
+.effect-14 ~ .focus-bg:after {
+  left: auto;
+  right: 0;
+  top: auto;
+  bottom: 0; }
+
+.effect-15 ~ .focus-bg:before, .effect-15 ~ .focus-bg:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  background-color: #ededed;
+  transition: 0.3s;
+  z-index: -1; }
+
+.effect-15:focus ~ .focus-bg:before {
+  transition: 0.3s;
+  width: 50%;
+  left: 0;
+  top: 0;
+  height: 100%; }
+
+.effect-15:focus ~ .focus-bg:after {
+  transition: 0.3s;
+  width: 50%;
+  height: 100%;
+  bottom: 0;
+  right: 0; }
+
+.effect-15 ~ .focus-bg:after {
+  left: auto;
+  right: 50%;
+  top: auto;
+  bottom: 50%; }
+
+.effect-16, .effect-17, .effect-18 {
+  border: 0;
+  padding: 4px 0;
+  border-bottom: 1px solid #ccc;
+  background-color: transparent; }
+
+.effect-16 ~ .focus-border {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #3399FF;
+  transition: 0.4s; }
+
+.effect-16:focus ~ .focus-border {
+  width: 100%;
+  transition: 0.4s; }
+
+.has-content.effect-16 ~ .focus-border {
+  width: 100%;
+  transition: 0.4s; }
+
+.effect-16 ~ label {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 9px;
+  color: #aaa;
+  transition: 0.3s;
+  z-index: -1;
+  letter-spacing: 0.5px; }
+
+.effect-16:focus ~ label {
+  top: -16px;
+  font-size: 12px;
+  color: #3399FF;
+  transition: 0.3s; }
+
+.has-content.effect-16 ~ label {
+  top: -16px;
+  font-size: 12px;
+  color: #3399FF;
+  transition: 0.3s; }
+
+.effect-17 ~ .focus-border {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #3399FF;
+  transition: 0.4s; }
+
+.effect-17:focus ~ .focus-border {
+  width: 100%;
+  transition: 0.4s;
+  left: 0; }
+
+.has-content.effect-17 ~ .focus-border {
+  width: 100%;
+  transition: 0.4s;
+  left: 0; }
+
+.effect-17 ~ label {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 9px;
+  color: #aaa;
+  transition: 0.3s;
+  z-index: -1;
+  letter-spacing: 0.5px; }
+
+.effect-17:focus ~ label {
+  top: -16px;
+  font-size: 12px;
+  color: #3399FF;
+  transition: 0.3s; }
+
+.has-content.effect-17 ~ label {
+  top: -16px;
+  font-size: 12px;
+  color: #3399FF;
+  transition: 0.3s; }
+
+.effect-18 ~ .focus-border {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  z-index: 99; }
+  .effect-18 ~ .focus-border:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: #3399FF;
+    transition: 0.4s; }
+  .effect-18 ~ .focus-border:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: #3399FF;
+    transition: 0.4s;
+    left: auto;
+    right: 0; }
+
+.effect-18:focus ~ .focus-border:before, .effect-18:focus ~ .focus-border:after {
+  width: 50%;
+  transition: 0.4s; }
+
+.has-content.effect-18 ~ .focus-border:before, .has-content.effect-18 ~ .focus-border:after {
+  width: 50%;
+  transition: 0.4s; }
+
+.effect-18 ~ label {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 0px;
+  color: #aaa;
+  transition: 0.3s;
+  z-index: -1;
+  letter-spacing: 0.5px; }
+
+.effect-18:focus ~ label {
+  top: -16px;
+  font-size: 12px;
+  color: #3399FF;
+  transition: 0.3s; }
+
+.has-content.effect-18 ~ label {
+  top: -16px;
+  font-size: 12px;
+  color: #3399FF;
+  transition: 0.3s; }
+
+.effect-19, .effect-20, .effect-21 {
+  border: 1px solid #ccc;
+  padding: 7px 14px;
+  transition: 0.4s;
+  background: transparent; }
+
+.effect-19 ~ .focus-border:before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #3399FF;
+  transition: 0.4s; }
+
+.effect-19 ~ .focus-border:after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #3399FF;
+  transition: 0.4s;
+  top: auto;
+  bottom: 0; }
+
+.effect-19 ~ .focus-border i:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background-color: #3399FF;
+  transition: 0.6s; }
+
+.effect-19 ~ .focus-border i:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background-color: #3399FF;
+  transition: 0.6s;
+  left: auto;
+  right: 0; }
+
+.effect-19:focus ~ .focus-border:before, .effect-19:focus ~ .focus-border:after {
+  left: 0;
+  width: 100%;
+  transition: 0.4s; }
+
+.has-content.effect-19 ~ .focus-border:before, .has-content.effect-19 ~ .focus-border:after {
+  left: 0;
+  width: 100%;
+  transition: 0.4s; }
+
+.effect-19:focus ~ .focus-border i:before, .effect-19:focus ~ .focus-border i:after {
+  top: -1px;
+  height: 100%;
+  transition: 0.6s; }
+
+.has-content.effect-19 ~ .focus-border i:before, .has-content.effect-19 ~ .focus-border i:after {
+  top: -1px;
+  height: 100%;
+  transition: 0.6s; }
+
+.effect-19 ~ label {
+  position: absolute;
+  left: 14px;
+  width: 100%;
+  top: 10px;
+  color: #aaa;
+  transition: 0.3s;
+  z-index: -1;
+  letter-spacing: 0.5px; }
+
+.effect-19:focus ~ label {
+  top: -18px;
+  left: 0;
+  font-size: 12px;
+  color: #3399FF;
+  transition: 0.3s; }
+
+.has-content.effect-19 ~ label {
+  top: -18px;
+  left: 0;
+  font-size: 12px;
+  color: #3399FF;
+  transition: 0.3s; }
+
+.effect-20 ~ .focus-border:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #3399FF;
+  transition: 0.3s; }
+
+.effect-20 ~ .focus-border:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #3399FF;
+  transition: 0.3s;
+  top: auto;
+  bottom: 0;
+  left: auto;
+  right: 0; }
+
+.effect-20 ~ .focus-border i:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background-color: #3399FF;
+  transition: 0.4s; }
+
+.effect-20 ~ .focus-border i:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background-color: #3399FF;
+  transition: 0.4s;
+  left: auto;
+  right: 0;
+  top: auto;
+  bottom: 0; }
+
+.effect-20:focus ~ .focus-border:before, .effect-20:focus ~ .focus-border:after {
+  width: 100%;
+  transition: 0.3s; }
+
+.has-content.effect-20 ~ .focus-border:before, .has-content.effect-20 ~ .focus-border:after {
+  width: 100%;
+  transition: 0.3s; }
+
+.effect-20:focus ~ .focus-border i:before, .effect-20:focus ~ .focus-border i:after {
+  height: 100%;
+  transition: 0.4s; }
+
+.has-content.effect-20 ~ .focus-border i:before, .has-content.effect-20 ~ .focus-border i:after {
+  height: 100%;
+  transition: 0.4s; }
+
+.effect-20 ~ label {
+  position: absolute;
+  left: 14px;
+  width: 100%;
+  top: 10px;
+  color: #aaa;
+  transition: 0.3s;
+  z-index: -1;
+  letter-spacing: 0.5px; }
+
+.effect-20:focus ~ label {
+  top: -18px;
+  left: 0;
+  font-size: 12px;
+  color: #3399FF;
+  transition: 0.3s; }
+
+.has-content.effect-20 ~ label {
+  top: -18px;
+  left: 0;
+  font-size: 12px;
+  color: #3399FF;
+  transition: 0.3s; }
+
+.effect-21 ~ .focus-border:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 2px;
+  background-color: #3399FF;
+  transition: 0.2s;
+  transition-delay: 0.2s; }
+
+.effect-21 ~ .focus-border:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 2px;
+  background-color: #3399FF;
+  transition: 0.2s;
+  transition-delay: 0.2s;
+  top: auto;
+  bottom: 0;
+  right: auto;
+  left: 0;
+  transition-delay: 0.6s; }
+
+.effect-21 ~ .focus-border i:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background-color: #3399FF;
+  transition: 0.2s; }
+
+.effect-21 ~ .focus-border i:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background-color: #3399FF;
+  transition: 0.2s;
+  left: auto;
+  right: 0;
+  top: auto;
+  bottom: 0;
+  transition-delay: 0.4s; }
+
+.effect-21:focus ~ .focus-border:before, .effect-21:focus ~ .focus-border:after {
+  width: 100%;
+  transition: 0.2s;
+  transition-delay: 0.6s; }
+
+.has-content.effect-21 ~ .focus-border:before, .has-content.effect-21 ~ .focus-border:after {
+  width: 100%;
+  transition: 0.2s;
+  transition-delay: 0.6s; }
+
+.effect-21:focus ~ .focus-border:after, .has-content.effect-21 ~ .focus-border:after {
+  transition-delay: 0.2s; }
+
+.effect-21:focus ~ .focus-border i:before, .effect-21:focus ~ .focus-border i:after {
+  height: 100%;
+  transition: 0.2s; }
+
+.has-content.effect-21 ~ .focus-border i:before, .has-content.effect-21 ~ .focus-border i:after {
+  height: 100%;
+  transition: 0.2s; }
+
+.effect-21:focus ~ .focus-border i:after, .has-conten.effect-21 ~ .focus-border i:after {
+  transition-delay: 0.4s; }
+
+.effect-21 ~ label {
+  position: absolute;
+  left: 14px;
+  width: 100%;
+  top: 10px;
+  color: #aaa;
+  transition: 0.3s;
+  z-index: -1;
+  letter-spacing: 0.5px; }
+
+.effect-21:focus ~ label {
+  top: -18px;
+  left: 0;
+  font-size: 12px;
+  color: #3399FF;
+  transition: 0.3s; }
+
+.has-content.effect-21 ~ label {
+  top: -18px;
+  left: 0;
+  font-size: 12px;
+  color: #3399FF;
+  transition: 0.3s; }
+
+.effect-22, .effect-23, .effect-24 {
+  border: 0;
+  padding: 7px 15px;
+  border: 1px solid #ccc;
+  position: relative;
+  background: transparent; }
+
+.effect-22 ~ .focus-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 100%;
+  background-color: transparent;
+  transition: 0.4s;
+  z-index: -1; }
+
+.effect-22:focus ~ .focus-bg {
+  transition: 0.4s;
+  width: 100%;
+  background-color: #ededed; }
+
+.has-content.effect-22 ~ .focus-bg {
+  transition: 0.4s;
+  width: 100%;
+  background-color: #ededed; }
+
+.effect-22 ~ label {
+  position: absolute;
+  left: 14px;
+  width: 100%;
+  top: 10px;
+  color: #aaa;
+  transition: 0.3s;
+  z-index: -1;
+  letter-spacing: 0.5px; }
+
+.effect-22:focus ~ label {
+  top: -18px;
+  left: 0;
+  font-size: 12px;
+  color: #333;
+  transition: 0.3s; }
+
+.has-content.effect-22 ~ label {
+  top: -18px;
+  left: 0;
+  font-size: 12px;
+  color: #333;
+  transition: 0.3s; }
+
+.effect-23 ~ .focus-bg:before, .effect-23 ~ .focus-bg:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  background-color: #ededed;
+  transition: 0.3s;
+  z-index: -1; }
+
+.effect-23:focus ~ .focus-bg:before {
+  transition: 0.3s;
+  width: 50%;
+  height: 100%; }
+
+.has-content.effect-23 ~ .focus-bg:before {
+  transition: 0.3s;
+  width: 50%;
+  height: 100%; }
+
+.effect-23 ~ .focus-bg:after {
+  left: auto;
+  right: 0;
+  top: auto;
+  bottom: 0; }
+
+.effect-23:focus ~ .focus-bg:after {
+  transition: 0.3s;
+  width: 50%;
+  height: 100%; }
+
+.has-content.effect-23 ~ .focus-bg:after {
+  transition: 0.3s;
+  width: 50%;
+  height: 100%; }
+
+.effect-23 ~ label {
+  position: absolute;
+  left: 14px;
+  width: 100%;
+  top: 10px;
+  color: #aaa;
+  transition: 0.3s;
+  z-index: -1;
+  letter-spacing: 0.5px; }
+
+.effect-23:focus ~ label {
+  top: -18px;
+  left: 0;
+  font-size: 12px;
+  color: #333;
+  transition: 0.3s; }
+
+.has-content.effect-23 ~ label {
+  top: -18px;
+  left: 0;
+  font-size: 12px;
+  color: #333;
+  transition: 0.3s; }
+
+.effect-24 ~ .focus-bg:before, .effect-24 ~ .focus-bg:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  background-color: #ededed;
+  transition: 0.3s;
+  z-index: -1; }
+
+.effect-24:focus ~ .focus-bg:before {
+  transition: 0.3s;
+  width: 50%;
+  left: 0;
+  top: 0;
+  height: 100%; }
+
+.has-content.effect-24 ~ .focus-bg:before {
+  transition: 0.3s;
+  width: 50%;
+  left: 0;
+  top: 0;
+  height: 100%; }
+
+.effect-24 ~ .focus-bg:after {
+  left: auto;
+  right: 50%;
+  top: auto;
+  bottom: 50%; }
+
+.effect-24:focus ~ .focus-bg:after {
+  transition: 0.3s;
+  width: 50%;
+  height: 100%;
+  bottom: 0;
+  right: 0; }
+
+.has-content.effect-24 ~ .focus-bg:after {
+  transition: 0.3s;
+  width: 50%;
+  height: 100%;
+  bottom: 0;
+  right: 0; }
+
+.effect-24 ~ label {
+  position: absolute;
+  left: 14px;
+  width: 100%;
+  top: 10px;
+  color: #aaa;
+  transition: 0.3s;
+  z-index: -1;
+  letter-spacing: 0.5px; }
+
+.effect-24:focus ~ label {
+  top: -18px;
+  left: 0;
+  font-size: 12px;
+  color: #333;
+  transition: 0.3s; }
+
+.has-content.effect-24 ~ label {
+  top: -18px;
+  left: 0;
+  font-size: 12px;
+  color: #333;
+  transition: 0.3s; }
+
+/*= input focus effects css End
+=============================== */
+/*!
  * Bootstrap v4.1.2 (https://getbootstrap.com/)
  * Copyright 2011-2018 The Bootstrap Authors
  * Copyright 2011-2018 Twitter, Inc.
@@ -6297,6 +7345,78 @@ a.text-dark:hover, a.text-dark:focus {
     color: inherit;
     border-color: #dee2e6; } }
 
+.span_pseudo {
+  content: "";
+  display: inline-block;
+  background: #fff;
+  width: 0;
+  height: 0.2rem;
+  position: absolute;
+  transform-origin: 0% 0%; }
+
+.custom-checkbox {
+  position: relative;
+  height: 2rem;
+  display: flex;
+  align-items: center; }
+  .custom-checkbox span:before, .custom-checkbox span:after {
+    content: "";
+    display: inline-block;
+    background: #fff;
+    width: 0;
+    height: 0.2rem;
+    position: absolute;
+    transform-origin: 0% 0%; }
+  .custom-checkbox input {
+    display: none; }
+    .custom-checkbox input:checked ~ span {
+      background: #3399FF;
+      border-color: #3399FF; }
+      .custom-checkbox input:checked ~ span:before {
+        width: 1rem;
+        height: 0.15rem;
+        transition: width 0.1s;
+        transition-delay: 0.3s; }
+      .custom-checkbox input:checked ~ span:after {
+        width: 0.4rem;
+        height: 0.15rem;
+        transition: width 0.1s;
+        transition-delay: 0.2s; }
+    .custom-checkbox input:disabled ~ span {
+      background: #ececec;
+      border-color: #dcdcdc; }
+    .custom-checkbox input:disabled ~ label {
+      color: #dcdcdc; }
+      .custom-checkbox input:disabled ~ label:hover {
+        cursor: default; }
+  .custom-checkbox label {
+    padding-left: 2rem;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    margin-bottom: 0; }
+  .custom-checkbox span {
+    display: inline-block;
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 2px solid #ccc;
+    position: absolute;
+    left: 0;
+    transition: all 0.2s;
+    z-index: 1;
+    box-sizing: content-box; }
+    .custom-checkbox span:before {
+      transform: rotate(-55deg);
+      top: 1rem;
+      left: 0.37rem; }
+    .custom-checkbox span:after {
+      transform: rotate(35deg);
+      bottom: 0.35rem;
+      left: 0.2rem; }
+
+html, body {
+  overflow-x: hidden; }
+
 .navbar {
   box-shadow: 0 12px 10px -7px rgba(0, 0, 0, 0.2); }
 
@@ -6387,11 +7507,30 @@ td.disabled {
   color: gray;
   /*border-color: gray;*/ }
 
+@media (max-width: 575px) {
+  .display-4 {
+    font-size: 1.5rem; }
+  .day h5 {
+    background-color: #f8f9fa;
+    padding: 3px 5px 5px;
+    margin: -8px -8px 8px -8px; }
+  .date {
+    padding-left: 4px; } }
+
+@media (min-width: 576px) {
+  .day {
+    height: 14.2857vw; } }
+
 table.squaretable {
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  overflow-wrap: break-word;
+  overflow-x: scroll !important; }
   table.squaretable td {
-    width: 14.2857142857%;
+    width: 100%;
     position: relative; }
+    @media (min-width: 768px) {
+      table.squaretable td {
+        width: 14.2857142857%; } }
     table.squaretable td .content {
       position: absolute;
       top: 0;
@@ -6437,23 +7576,21 @@ table.squaretable {
     padding: 1em; }
 
 footer {
-  background-image: url(/Content/img/jumbo-horse.jpg);
+  /*background-image: url(/Content/img/jumbo-horse.jpg);*/
   background-position: 4% 88%;
   background-size: cover;
   background-repeat: no-repeat;
-  text-shadow: black 0.3em 0.3em 0.3em;
   bottom: 0px;
   padding: 0; }
   footer .footer-container {
-    background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.75));
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.2), rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.8));
     padding: 1em;
     padding-top: 2em; }
   footer h5 {
     padding-left: 0px;
     padding-bottom: 6px;
     margin-bottom: 20px;
-    color: #ffffff;
-    text-shadow: black 0.3em 0.3em 0.3em; }
+    color: #ffffff; }
   footer a {
     color: #ffffff;
     text-decoration: none !important;
@@ -6474,4 +7611,13 @@ footer {
     margin-right: 5px; }
   footer ul.quick-links li:hover a i {
     font-weight: 700; }
+
+.markdown-partial {
+  overflow-y: scroll;
+  zoom: 1.5;
+  -moz-transform: scale(1.5);
+  max-height: 370px; }
+
+.gist-file {
+  border: none !important; }
 

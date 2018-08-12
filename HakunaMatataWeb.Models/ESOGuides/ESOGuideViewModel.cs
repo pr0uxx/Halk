@@ -1,4 +1,5 @@
 ﻿using HakunaMatataWeb.Data.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +11,7 @@ namespace HakunaMatataWeb.Models.ESOGuides
         public int Id { get; set; }
 
         [DisplayName("Guide Type")]
-        public EventType GuideType { get; set; }
+        public GuideType GuideType { get; set; }
 
         [StringLength(30, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 3)]
         public string Title { get; set; }
@@ -34,6 +35,8 @@ namespace HakunaMatataWeb.Models.ESOGuides
         public string LastUpdatedDate { get; set; }
 
         public string ContentHtml { get; set; } = string.Empty;
+
+       
 
         //add file upload
     }

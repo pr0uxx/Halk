@@ -116,6 +116,9 @@
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.5.8\lib\net45\NLog.dll</HintPath>
     </Reference>
+    <Reference Include="SendGrid, Version=9.8.0.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sendgrid.9.9.0\lib\net452\SendGrid.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -211,6 +214,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\img\footer.jpg" />
     <Content Include="Content\img\jumbo-horse.jpg" />
+    <Content Include="Content\img\placeholder.png" />
     <Content Include="Content\scss\bootstrap\bootstrap-grid.scss" />
     <Content Include="Content\scss\bootstrap\bootstrap-reboot.scss" />
     <Content Include="Content\scss\bootstrap\bootstrap.css">
@@ -307,6 +311,7 @@
       <DependentUpon>main-site.css</DependentUpon>
     </Content>
     <Content Include="Content\scss\main-site.scss" />
+    <Content Include=".gitignore" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
@@ -324,11 +329,15 @@
       <DependentUpon>sidebar.css</DependentUpon>
     </Content>
     <Content Include="Content\scss\sidebar.scss" />
+    <Content Include="Content\scss\input-focus.scss" />
+    <Content Include="Content\scss\custom-checkbox.scss" />
+    <Content Include="Content\scss\responsive-scaling.scss" />
     <None Include="Controllers\GuildEventController.cs.old" />
     <Compile Include="Controllers\GuildEventsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\SiteReferenceController.cs" />
     <Compile Include="Controllers\UtilitiesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -341,7 +350,10 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\FontAwesome\all.min.js" />
+    <Content Include="Scripts\input-focus.js" />
+    <Content Include="Scripts\MarkdownCheatSheet.js" />
     <Content Include="Scripts\moment-js.min.js" />
+    <Content Include="Scripts\responsive-scaling.js" />
     <Content Include="Views\GuildEvents\Create.cshtml" />
     <Content Include="Views\GuildEvents\Delete.cshtml" />
     <Content Include="Views\GuildEvents\Details.cshtml" />
@@ -350,6 +362,9 @@
     <Content Include="Views\GuildEvents\Administrate.cshtml" />
     <Content Include="Views\Shared\_LayoutBS3.cshtml" />
     <Content Include="Views\Shared\_LayoutSidebar.cshtml" />
+    <Content Include="Views\Shared\_MarkdownGuide.cshtml" />
+    <Content Include="Views\Shared\Info.cshtml" />
+    <Content Include="Views\SiteReference\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

@@ -6,7 +6,13 @@
 }
 
 <div class="col-12 pt-4 ">
-	<h4>@Model.Title</h4>
+	<h4>@Model.Title </h4>
+	<div class="row">
+		<p class=" lead col-2">Event Master: @Model.EventMaster</p>
+		<p class="lead col-3">Recommended for levels: @Model.MinLevel - @Model.MaxLevel</p>
+	</div>
+
+	
 	<hr />
 	@Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn-custom gradient-forest-green mr-4" })
 	@Html.ActionLink("Back to List", "Index", null, new { @class = "btn-custom gradient-forest-green" })

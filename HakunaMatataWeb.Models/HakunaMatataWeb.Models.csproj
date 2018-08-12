@@ -94,6 +94,7 @@
     <Compile Include="GuildEventModels\GuildEventDetailsViewModel.cs" />
     <Compile Include="GuildEventModels\GuildEventViewModel.cs" />
     <Compile Include="GuildEventModels\Test.cs" />
+    <Compile Include="HomeModels\HomeViewModel.cs" />
     <Compile Include="ManageViewModels.cs" />
     <Compile Include="News\NewsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -118,5 +119,6 @@
       <Name>HakunaMatataWeb.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -15,11 +15,17 @@ namespace HakunaMatataWeb.Models.GuildEventModels
         [Display(Name = "Event Type")]
         public EventType EventType { get; set; }
 
+        [Display(Name = "Unique Event")]
         public bool IsUniqueEvent { get; set; }
+        [Display(Name = "Monthly")]
         public bool IsMonthly { get; set; }
+        [Display(Name = "Weekly")]
         public bool IsWeekly { get; set; }
+        [Display(Name = "Twice Monthly")]
         public bool IsBiWeekly { get; set; }
+        [Display(Name = "Day Of Week")]
         public int EventDayOfWeek { get; set; }
+        [Display(Name = "Day Of Month")]
         public int EventDayOfMonth { get; set; }
 
         [StringLength(4000, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 3)]
@@ -52,5 +58,7 @@ namespace HakunaMatataWeb.Models.GuildEventModels
         [Required]
         [Display(Name = "Last Event Date")]
         public DateTime LastEventDate { get; set; }
+
+        public DateTime NextEventDate { get; set; }
     }
 }

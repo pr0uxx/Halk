@@ -87,6 +87,7 @@
     <Compile Include="DataConnection\ApplicationDbContext.cs" />
     <Compile Include="Enums\CustomClaims.cs" />
     <Compile Include="Enums\EventType.cs" />
+    <Compile Include="Enums\GuideType.cs" />
     <Compile Include="Enums\GuildRank.cs" />
     <Compile Include="Enums\SiteRank.cs" />
     <Compile Include="Migrations\201806231807387_InitialCreate.cs" />

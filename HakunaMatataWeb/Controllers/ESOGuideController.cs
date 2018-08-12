@@ -273,10 +273,12 @@ namespace HakunaMatataWeb.Controllers
                 }
             }
 
+            var content = Helper.Base64Decode(eSOGuide.Content);
+
             var model = new ESOGuideViewModel()
             {
                 Author = eSOGuide.Author,
-                Content = eSOGuide.Content,
+                Content = content,
                 CreationDate = eSOGuide.CreationDate.ToString("dd/MM/yyyy"),
                 GuideType = eSOGuide.GuideType,
                 Id = eSOGuide.EsoGuideId,
@@ -284,7 +286,7 @@ namespace HakunaMatataWeb.Controllers
                 LastUpdatedDate = eSOGuide.LastUpdatedDate.ToString("dd/MM/yyyy"),
                 SubTitle = eSOGuide.SubTitle,
                 Title = eSOGuide.Title,
-                ContentHtml = Helper.ConvertMarkdown(eSOGuide.Content)
+                ContentHtml = Helper.ConvertMarkdown(content)
             };
 
             return View(model);
@@ -330,7 +332,7 @@ namespace HakunaMatataWeb.Controllers
                     }
                 }
 
-                var g = ConvertGuideViewToDbModel(eSOGuide, i);
+                var g = await ConvertGuideViewToDbModelAsync(eSOGuide, i);
                 g.CreationDate = DateTime.Now;
                 db.ESOGuides.Add(g);
                 await db.SaveChangesAsync();
@@ -375,7 +377,7 @@ namespace HakunaMatataWeb.Controllers
         public async Task<ActionResult> Edit([Bind(Include = "Id,GuideType,Title,SubTitle,Content,Author,CreationDate,LastUpdatedDate,ImageUrls")] ESOGuideViewModel e)
         {
             if (ModelState.IsValid)
-            {
+                {
                 List<ImageUrl> i = new List<ImageUrl>();
 
                 //var guide = db.ESOGuides.FindAsync(e.Id);
@@ -388,7 +390,7 @@ namespace HakunaMatataWeb.Controllers
                     }
                 }
 
-                var g = ConvertGuideViewToDbModel(e, i);
+                var g = await ConvertGuideViewToDbModelAsync(e, i, false, false);
 
                 db.Entry(g).State = EntityState.Modified;
                 await db.SaveChangesAsync();
@@ -423,37 +425,50 @@ namespace HakunaMatataWeb.Controllers
             return RedirectToAction("Index");
         }
 
-        private ESOGuide ConvertGuideViewToDbModel(ESOGuideViewModel e, List<ImageUrl> i)
+        private async Task<ESOGuide> ConvertGuideViewToDbModelAsync(ESOGuideViewModel e, List<ImageUrl> i, bool convertAuthor = true, bool convertDate = true)
         {
             var g = new ESOGuide()
             {
-                //LastUpdatedDate = DateTime.Now,
-                //CreationDate = DateTime.Parse(e.CreationDate),
-                //Author = User.Identity.GetDisplayName(),
-                //AuthorId = User.Identity.GetUserId(),
-                //Content = e.Content,
-                //GuideType = e.GuideType,
-                //ImageUrls = i,
-                //SubTitle = e.SubTitle,
-                //Title = e.Title
             };
 
+            var curr = await db.ESOGuides.AsNoTracking().FirstOrDefaultAsync(x => x.EsoGuideId.Equals(e.Id));
+
             g.LastUpdatedDate = DateTime.Now;
-            if (e.CreationDate != null)
+            if (e.CreationDate == null)
             {
-                g.CreationDate = DateTime.Parse(e.CreationDate);
+                g.CreationDate = curr.CreationDate;
+            }
+
+            if (convertDate)
+            {
+                if (e.CreationDate != null)
+                {
+                    g.CreationDate = DateTime.Parse(e.CreationDate);
+                }
+                else
+                {
+                    g.CreationDate = DateTime.Now;
+                }
+            }
+
+
+            if (convertAuthor)
+            {
+                g.Author = User.Identity.GetDisplayName() ?? curr.Author;
+                g.AuthorId = User.Identity.GetUserId() ?? curr.AuthorId;
             }
             else
             {
-                g.CreationDate = DateTime.Now;
+                g.Author = curr.Author ?? User.Identity.GetDisplayName();
+                g.AuthorId = curr.AuthorId ?? User.Identity.GetUserId();
             }
-            g.Author = User.Identity.GetDisplayName();
-            g.AuthorId = User.Identity.GetUserId();
-            g.Content = e.Content;
+            var content = (Helper.Base64Encode(e.Content));
+
+            g.Content = (content.Equals(string.Empty)) ? curr.Content : content ;
             g.GuideType = e.GuideType;
-            g.ImageUrls = i;
-            g.SubTitle = e.SubTitle;
-            g.Title = e.Title;
+            g.ImageUrls = i ?? curr.ImageUrls;
+            g.SubTitle = e.SubTitle ?? curr.SubTitle;
+            g.Title = e.Title ?? curr.Title;
 
             if (e.Id > 0)
             {
@@ -468,7 +483,7 @@ namespace HakunaMatataWeb.Controllers
             var g = new ESOGuideViewModel()
             {
                 Author = e.Author,
-                Content = e.Content,
+                Content = Helper.Base64Decode(e.Content),
                 CreationDate = e.CreationDate.ToString("dd/MM/yyyy"),
                 GuideType = e.GuideType,
                 Id = e.EsoGuideId,

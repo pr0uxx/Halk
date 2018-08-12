@@ -5,137 +5,159 @@
 	ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
-
 @using (Html.BeginForm())
 {
 	@Html.AntiForgeryToken()
 	@Html.ValidationSummary(true)
+<div class="row">
 
-	<div class="form-horizontal">
-		<h4>GuildEvent</h4>
+	<div class="col-12 col-md-6 pt-4 pl-4 ">
+		<h4>Create new Guild Event</h4>
 		<hr />
+
 		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-		<div class="form-group">
-			@Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+		<div class="row">
+			<div class="col-6">
+				<div class="form-group col-12">
+					@Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-12 " })
+					<div class="col-md-12">
+						@Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+					</div>
+				</div>
+				<div class="form-group col-12">
+					@Html.LabelFor(model => model.EventType, htmlAttributes: new { @class = "control-label col-12" })
+					<div class="col-md-12">
+						@Html.EnumDropDownListFor(model => model.EventType, htmlAttributes: new { @class = "form-control" })
+						@Html.ValidationMessageFor(model => model.EventType, "", new { @class = "text-danger" })
+					</div>
+				</div>
+				<div class="form-check col-12">
+					<div class="col-2">
+						@Html.CheckBoxFor(model => model.Featured, new { @class = "form-check-input", type = "checkbox", @disabled = "disabled" })
+						@Html.LabelFor(model => model.Featured, htmlAttributes: new { @class = "form-check-label" })
+						@Html.ValidationMessageFor(model => model.Featured, "", new { @class = "text-danger " })
+					</div>
+				</div>
+			</div>
+			<div class="col-6">
+				<div class="form-group w-100">
+					@Html.LabelFor(model => model.MinLevel, htmlAttributes: new { @class = "control-label col-8 " })
+					<div class="col-md-12">
+						@Html.EditorFor(model => model.MinLevel, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(model => model.MinLevel, "", new { @class = "text-danger" })
+					</div>
+				</div>
+
+				<div class="form-group w-100">
+					@Html.LabelFor(model => model.MaxLevel, htmlAttributes: new { @class = "control-label col-8 " })
+					<div class="col-md-12">
+						@Html.EditorFor(model => model.MaxLevel, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(model => model.MaxLevel, "", new { @class = "text-danger" })
+					</div>
+				</div>
 			</div>
 		</div>
+		<br />
+		<p class="lead font-weight-bold">When Does your event occur?</p>
+		<p><b>Weekly and Twice Monthly events:</b> Run on the same day of the week your first event date is on.</p>
+		<p><b>Monthly events:</b> Run on the same day of the month your first event date is on.</p>
+		<p><b>Unique events:</b> Only occur once</p>
+		
 
-		<div class="form-group">
-			@Html.LabelFor(model => model.EventType, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.EnumDropDownListFor(model => model.EventType, htmlAttributes: new { @class = "form-control" })
-				@Html.ValidationMessageFor(model => model.EventType, "", new { @class = "text-danger" })
+
+		<div class="row">
+
+
+			<div class="col-6">
+				<div class="form-group datetimepicker">
+					@Html.LabelFor(model => model.FirstEventDate, htmlAttributes: new { @class = "control-label col-md-12" })
+					<div class="col-md-12">
+						<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+							@Html.EditorFor(model => model.FirstEventDate, new { htmlAttributes = new { @class = "form-control datetimepicker-input", data_target = "#datetimepicker1" } })
+							<div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+							</div>
+							@Html.ValidationMessageFor(model => model.FirstEventDate, "", new { @class = "text-danger" })
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					@Html.LabelFor(model => model.LastEventDate, htmlAttributes: new { @class = "control-label col-md-12" })
+					<div class="col-md-12">
+						<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+							@Html.EditorFor(model => model.LastEventDate, new { htmlAttributes = new { @class = "form-control datetimepicker-input", data_target = "#datetimepicker2" } })
+							<div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+							</div>
+							@Html.ValidationMessageFor(model => model.LastEventDate, "", new { @class = "text-danger" })
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
+			<div class="col-6">
+				<br />
+				<div class="form-check col-12">
+					<div class="col-12">
+						@Html.CheckBoxFor(model => model.IsUniqueEvent, new { @class = "form-check-input", type = "checkbox" })
+						@Html.LabelFor(model => model.IsUniqueEvent, htmlAttributes: new { @class = "form-check-label" })
+						@Html.ValidationMessageFor(model => model.IsUniqueEvent, "", new { @class = "text-danger" })
+					</div>
 
-		<div class="form-group">
-			@Html.LabelFor(model => model.IsUniqueEvent, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				<div class="checkbox">
-					@Html.EditorFor(model => model.IsUniqueEvent)
-					@Html.ValidationMessageFor(model => model.IsUniqueEvent, "", new { @class = "text-danger" })
+					<div class="col-12">
+						@Html.CheckBoxFor(model => model.IsMonthly, new { @class = "form-check-input", type = "checkbox" })
+						@Html.LabelFor(model => model.IsMonthly, htmlAttributes: new { @class = "form-check-label" })
+						@Html.ValidationMessageFor(model => model.IsMonthly, "", new { @class = "text-danger" })
+					</div>
+
+					<div class="col-12">
+						@Html.CheckBoxFor(model => model.IsWeekly, new { @class = "form-check-input", type = "checkbox" })
+						@Html.LabelFor(model => model.IsWeekly, htmlAttributes: new { @class = "form-check-label" })
+						@Html.ValidationMessageFor(model => model.IsWeekly, "", new { @class = "text-danger" })
+					</div>
+
+					<div class="col-12">
+						@Html.CheckBoxFor(model => model.IsBiWeekly, new { @class = "form-check-input", type = "checkbox" })
+						@Html.LabelFor(model => model.IsBiWeekly, htmlAttributes: new { @class = "form-check-label" })
+						@Html.ValidationMessageFor(model => model.IsBiWeekly, "", new { @class = "text-danger" })
+					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="form-group">
-			@Html.LabelFor(model => model.IsMonthly, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				<div class="checkbox">
-					@Html.EditorFor(model => model.IsMonthly)
-					@Html.ValidationMessageFor(model => model.IsMonthly, "", new { @class = "text-danger" })
-				</div>
-			</div>
+
+
+	</div>
+	<div class="col-12 col-md-6 pt-4 pr-4 ">
+		<h4>Markdown Cheatsheet</h4>
+		<hr />
+		<div class="markdown-partial">
+			@Html.Partial("_MarkdownGuide")
 		</div>
 
-		<div class="form-group">
-			@Html.LabelFor(model => model.IsWeekly, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				<div class="checkbox">
-					@Html.EditorFor(model => model.IsWeekly)
-					@Html.ValidationMessageFor(model => model.IsWeekly, "", new { @class = "text-danger" })
-				</div>
-			</div>
-		</div>
+	</div>
+</div>
+<div class="container-fluid">
 
+	<div class="w-100 pt-4">
+		<p class="lead font-weight-bold">Write the details of your event here:</p>
+		<p>Don't forget that you can use markdown. Your guide will appear as a page that shows only what's in the preview.</p>
+		<p>Click out of the box to update the preview!</p>
 		<div class="form-group">
-			@Html.LabelFor(model => model.IsBiWeekly, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				<div class="checkbox">
-					@Html.EditorFor(model => model.IsBiWeekly)
-					@Html.ValidationMessageFor(model => model.IsBiWeekly, "", new { @class = "text-danger" })
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group">
-			@Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.TextAreaFor(model => model.Content, new { htmlAttributes = new { @class = "form-control" } })
+			<div class="col-md-12">
+				@Html.TextAreaFor(model => model.Content, 10, 20, new { @class = "form-control", wrap = "hard" })
 				@Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
 			</div>
 		</div>
+	</div>
+</div>
+	<div class="well col-12" id="preview-pane">
+	</div>
 
-		<div class="form-group">
-			@Html.LabelFor(model => model.MinLevel, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.EditorFor(model => model.MinLevel, new { htmlAttributes = new { @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.MinLevel, "", new { @class = "text-danger" })
-			</div>
-		</div>
-
-		<div class="form-group">
-			@Html.LabelFor(model => model.MaxLevel, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.EditorFor(model => model.MaxLevel, new { htmlAttributes = new { @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.MaxLevel, "", new { @class = "text-danger" })
-			</div>
-		</div>
-
-		<div class="form-group">
-			@Html.LabelFor(model => model.Featured, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				<div class="checkbox">
-					@Html.EditorFor(model => model.Featured)
-					@Html.ValidationMessageFor(model => model.Featured, "", new { @class = "text-danger" })
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group datetimepicker">
-			@Html.LabelFor(model => model.FirstEventDate, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-					@Html.EditorFor(model => model.FirstEventDate, new { htmlAttributes = new { @class = "form-control datetimepicker-input", data_target = "#datetimepicker1" } })
-					<div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-						<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-					</div>
-					@Html.ValidationMessageFor(model => model.FirstEventDate, "", new { @class = "text-danger" })
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group">
-			@Html.LabelFor(model => model.LastEventDate, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-					@Html.EditorFor(model => model.LastEventDate, new { htmlAttributes = new { @class = "form-control datetimepicker-input", data_target = "#datetimepicker2" } })
-					<div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-						<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-					</div>
-					@Html.ValidationMessageFor(model => model.LastEventDate, "", new { @class = "text-danger" })
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group">
-			<div class="col-md-offset-2 col-md-10">
-				<input type="submit" value="Create" class="btn btn-default" />
-			</div>
+	<div class="form-group">
+		<div class="col-md-offset-2 col-md-10">
+			<input type="submit" value="Create" class="btn btn-default" />
 		</div>
 	</div>
 }

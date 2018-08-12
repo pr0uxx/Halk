@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
 
@@ -134,14 +135,89 @@ namespace HakunaMatataWeb.Utilities
 
         public static string Base64Encode(string s)
         {
-            var result = System.Text.Encoding.UTF8.GetBytes(s);
-            return System.Convert.ToBase64String(result);
+            try
+            {
+                var result = System.Text.Encoding.UTF8.GetBytes(s);
+                return System.Convert.ToBase64String(result);
+            }
+            catch
+            {
+                return s;
+            }
+            
         }
 
         public static string Base64Decode(string s)
         {
-            var result = System.Convert.FromBase64String(s);
-            return System.Text.Encoding.UTF8.GetString(result);
+            try
+            {
+                var result = System.Convert.FromBase64String(s);
+                return System.Text.Encoding.UTF8.GetString(result);
+            }
+            catch
+            {
+                return s;
+            }
+            
+        }
+
+        public static string GetFirstUrlFromContent(string content)
+        {
+            if (content != null)
+            {
+                var m = Regex.Matches(content, @"(http|ftp|https):\/\/([\w\-_]+(?:(?:\.[\w\-_]+)+))([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?");
+
+                if (m != null)
+                {
+                    foreach (Match i in m)
+                    {
+                        if (IsImageUrl(i.Value))
+                        {
+                            return (i.Value);
+                        }
+                    }
+                }
+
+            }
+
+            return string.Empty;
+        }
+
+        public static DateTime GetNextEventDate(bool isBiWeekly, bool isMonthly, bool isUnique, bool isWeekly, DateTime firstEventDate)
+        {
+            var result = new DateTime();
+            DateTime today = DateTime.Today;
+            var thisMonth = DateTime.Now.Month;
+            var thisYear = DateTime.Now.Year;
+            var eventDayOfWeek = firstEventDate.DayOfWeek;
+
+            if (isUnique)
+            {
+                return firstEventDate;
+            }
+            if (isMonthly)
+            {
+                result = new DateTime(thisYear, thisMonth, firstEventDate.Day);
+            }
+            if (isBiWeekly)
+            {
+                bool oddWeek = Convert.ToBoolean(firstEventDate.GetWeekOfMonth() % 2);
+                int daysUntilEvent = ((int)eventDayOfWeek - (int)today.DayOfWeek + 7) % 7;
+                var nextEventDate = DateTime.Today.AddDays(daysUntilEvent).AddHours(firstEventDate.Hour).AddMinutes(firstEventDate.Minute);
+
+                bool isEventOddWeek = Convert.ToBoolean(nextEventDate.GetWeekOfMonth() % 2);
+
+                if (oddWeek == isEventOddWeek)
+                {
+                    return nextEventDate;
+                }
+                else
+                {
+                    return nextEventDate.AddDays(7);
+                }
+            }
+
+            return result;
         }
     }
 }

@@ -1,0 +1,28 @@
+﻿.scale-responsive {
+
+
+
+}
+
+.responsive-content {
+
+
+	-ms-transform-origin: top left;
+	-webkit-transform-origin: top left;
+	transform-origin: top left;
+	-webkit-transition: all 500ms ease-in-out !important;
+	transition: all 500ms ease-in-out !important;
+
+
+	img {
+		float: left;
+		margin: 20px;
+	}
+
+	p {
+		position: absolute;
+		bottom: 20px;
+		left: 20px;
+		right: 20px;
+	}
+}
