@@ -1,4 +1,4 @@
-﻿@model HakunaMatataWeb.Data.Models.GuildEvent
+﻿@model HakunaMatataWeb.Models.GuildEventModels.GuildEventViewModel
 @using HakunaMatataWeb.Data.Enums
 
 @{
@@ -70,10 +70,7 @@
 				<p><b>Monthly events:</b> Run on the same day of the month your first event date is on.</p>
 				<p><b>Unique events:</b> Only occur once</p>
 
-
-
 				<div class="row">
-
 
 					<div class="col-6">
 						<div class="form-group datetimepicker">
@@ -131,9 +128,6 @@
 						</div>
 					</div>
 				</div>
-
-
-
 			</div>
 			<div class="col-12 col-md-6 pt-4 pr-4 ">
 				<h4>Markdown Cheatsheet</h4>
@@ -141,7 +135,6 @@
 				<div class="markdown-partial">
 					@Html.Partial("_MarkdownGuide")
 				</div>
-
 			</div>
 		</div>
 		<div class="container-fluid">
@@ -182,7 +175,7 @@
 	<script>
 		$(function () {
 			$.validator.methods.date = function (value, element) {
-				return this.optional(element) || moment(value, "DD/MM/YYYY HH:mm", true).isValid();
+				return this.optional(element) || moment(value, 'DD/MM/YYYY HH:mm', true).isValid();
 			}
 		});
 

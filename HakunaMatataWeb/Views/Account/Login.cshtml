@@ -18,33 +18,40 @@
 			<div class="col-4 p-0 m-4">
 				<div class="input-effect">
 
-					<input class="effect-18" type="text" placeholder="Username"
+					<input class="effect-9" type="text" placeholder="Username"
 						   data-val-required="The User Name field is required."
 						   id="UserName" name="UserName" autocomplete="on"
 						   aria-describedby="UserName-error" aria-invalid="false" />
-					@Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+
 					<span class="focus-border">
 						<i></i>
 					</span>
 				</div>
 			</div>
 		</div>
+		<div class="d-flex mb-2 justify-content-center">
+			@Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+		</div>
 		<div class="d-flex justify-content-center">
 			<div class="col-4 p-0 m-4">
 				<div class="input-effect">
 
-					<input class="effect-18" type="password" placeholder=""
+					<input class="effect-9" type="password" placeholder="Password"
 						   data-val-required="The Password field is required."
 						   id="Password" name="Password" autocomplete="on"
 						   aria-describedby="Password-error" aria-invalid="false" />
-					@Html.LabelFor(m => m.Password)
-					@Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+					@*@Html.LabelFor(m => m.Password)*@
+
 					<span class="focus-border">
 						<i></i>
 					</span>
 				</div>
+
 			</div>
 
+		</div>
+		<div class="d-flex mb-4 justify-content-center">
+			@Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
 		</div>
 		@*<div class="form-group">
 				@Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
@@ -63,7 +70,7 @@
 
 		@*<div class="g-recaptcha" data-sitekey="6LdIh2QUAAAAAD3zAym4M0NoC72orzE_qMP_q8Df"></div>*@
 		<div class="d-flex justify-content-center mt-4">
-					<input type="submit" value="Log in" class="btn btn-success btn-block col-1" />
+			<input type="submit" value="Log in" class="btn btn-success btn-block col-1" />
 		</div>
 		<div class="d-flex justify-content-center mt-4">
 			@Html.ActionLink("Register", "Register", null, new { @class = "btn btn-success btn-block col-1" })
@@ -71,7 +78,7 @@
 		<div class="d-flex justify-content-center mt-4">
 			@Html.ActionLink("Forgot your password?", "ForgotPassword")
 		</div>
-<br /><br /><br /><br /><br />
+		<br /><br /><br /><br /><br />
 	}
 </section>
 

@@ -61,10 +61,20 @@ namespace HakunaMatataWeb.Controllers
 
             foreach (var d in guides)
             {
+                d.Content = Helper.Base64Decode(d.Content);
                 var imgList = new List<string>();
                 foreach (var img in d.ImageUrls)
                 {
                     imgList.Add(img.Uri);
+                }
+
+                if (imgList.Count == 0)
+                {
+                    var fi = Helper.GetFirstUrlFromContent(d.Content);
+                    if (!string.IsNullOrEmpty(fi))
+                    {
+                        imgList.Add(fi);
+                    }
                 }
 
                 var m = new ESOGuideViewModel()
@@ -93,7 +103,6 @@ namespace HakunaMatataWeb.Controllers
                             }
                         }
                     }
-
                 }
 
                 result.Add(m);
@@ -131,7 +140,7 @@ namespace HakunaMatataWeb.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> FilterGuides(ESOGuideFilterModel data)
         {
-             if (data != null)
+            if (data != null)
             {
                 var dbResult = await db.ESOGuides.Where(x => x.CreationDate > data.DateFrom
                                                             && x.CreationDate < data.DateTo).ToListAsync();
@@ -139,8 +148,6 @@ namespace HakunaMatataWeb.Controllers
                 if (!string.IsNullOrEmpty(data.TextSearchString))
                 {
                     data.TextSearchString = Helper.CleanInputString(data.TextSearchString);
-
-
 
                     if (data.AllEventTypes && data.AllSearchTypes)
                     {
@@ -191,14 +198,15 @@ namespace HakunaMatataWeb.Controllers
                                 case "title":
                                     temp.AddRange(dbResult.Where(x => x.Title.Contains(data.TextSearchString)).Distinct());
                                     break;
+
                                 case "sub":
                                     temp.AddRange(dbResult.Where(x => x.SubTitle.Contains(data.TextSearchString)).Distinct());
                                     break;
+
                                 case "content":
                                     temp.AddRange(dbResult.Where(x => x.Content.Contains(data.TextSearchString)).Distinct());
                                     break;
                             }
-
                         }
 
                         dbResult = temp.Where(x => data.EventTypes.Contains(Convert.ToInt32(x.GuideType))).ToList();
@@ -220,14 +228,15 @@ namespace HakunaMatataWeb.Controllers
                                 case "title":
                                     temp.AddRange(dbResult.Where(x => x.Title.Contains(data.TextSearchString)).Distinct());
                                     break;
+
                                 case "sub":
                                     temp.AddRange(dbResult.Where(x => x.SubTitle.Contains(data.TextSearchString)).Distinct());
                                     break;
+
                                 case "content":
                                     temp.AddRange(dbResult.Where(x => x.Content.Contains(data.TextSearchString)).Distinct());
                                     break;
                             }
-
                         }
 
                         dbResult = temp;
@@ -377,7 +386,7 @@ namespace HakunaMatataWeb.Controllers
         public async Task<ActionResult> Edit([Bind(Include = "Id,GuideType,Title,SubTitle,Content,Author,CreationDate,LastUpdatedDate,ImageUrls")] ESOGuideViewModel e)
         {
             if (ModelState.IsValid)
-                {
+            {
                 List<ImageUrl> i = new List<ImageUrl>();
 
                 //var guide = db.ESOGuides.FindAsync(e.Id);
@@ -436,7 +445,14 @@ namespace HakunaMatataWeb.Controllers
             g.LastUpdatedDate = DateTime.Now;
             if (e.CreationDate == null)
             {
-                g.CreationDate = curr.CreationDate;
+                if (curr != null && curr.CreationDate != null)
+                {
+                    g.CreationDate = curr.CreationDate;
+                }
+                else
+                {
+                    g.CreationDate = DateTime.Now;
+                }
             }
 
             if (convertDate)
@@ -451,7 +467,6 @@ namespace HakunaMatataWeb.Controllers
                 }
             }
 
-
             if (convertAuthor)
             {
                 g.Author = User.Identity.GetDisplayName() ?? curr.Author;
@@ -464,7 +479,7 @@ namespace HakunaMatataWeb.Controllers
             }
             var content = (Helper.Base64Encode(e.Content));
 
-            g.Content = (content.Equals(string.Empty)) ? curr.Content : content ;
+            g.Content = (content.Equals(string.Empty)) ? curr.Content : content;
             g.GuideType = e.GuideType;
             g.ImageUrls = i ?? curr.ImageUrls;
             g.SubTitle = e.SubTitle ?? curr.SubTitle;

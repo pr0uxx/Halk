@@ -51,7 +51,6 @@ namespace HakunaMatataWeb.Controllers
             {
                 return (Json("You sent me a bad month or year!", JsonRequestBehavior.AllowGet));
             }
-            
 
             var firstDayOfMonth = new DateTime(Year, Month, 1);
             var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
@@ -76,56 +75,13 @@ namespace HakunaMatataWeb.Controllers
             var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
             var m = new GuildEventCalendarViewModel();
             var localTimeZone = User.GetClaimValueString(CustomClaims.LocalTimezone.ToString());
-            m = await eventService.GetMonthEventCalendarAsync(now.Month, now.Year, localTimeZone); 
+            m = await eventService.GetMonthEventCalendarAsync(now.Month, now.Year, localTimeZone);
 
             string strong = "stronk";
             sw.Stop();
             logger.Trace(string.Concat("Index method runs in: ", sw.ElapsedMilliseconds, " ms."));
             return View(m);
         }
-
-        //private List<DayData> StandardiseDayData(List<DayData> data, DateTime firstDay, DateTime lastDay)
-        //{
-        //    int fd = (int)firstDay.DayOfWeek;
-
-        //    if (fd != 1)
-        //    {
-        //        int dif = fd - 1;
-
-        //        //correct for sundays
-        //        if (dif == -1)
-        //        {
-        //            dif = 6;
-        //        }
-
-        //        var l = new List<DayData>();
-
-        //        for (int i = 0; i < dif; i++)
-        //        {
-        //            DayOfWeek dayOfWeek = (DayOfWeek)(fd);
-        //            var ds = firstDay.AddDays(-(dif - i + 1)).DayOfWeek.ToString();
-
-        //            var thisDay = firstDay.AddDays(-(dif - i));
-
-        //            var d = new DayData()
-        //            {
-        //                Date = thisDay,
-        //                DayName = thisDay.DayOfWeek.ToString(),
-        //                DayOfMonth = thisDay.Day,
-        //                DayOfWeek = (int)thisDay.DayOfWeek,
-        //                GuildEvents = new List<Tuple<string, int, string>>(),
-        //                IsOutsideMonth = true,
-        //                WeekOfMonth = (int)thisDay.GetWeekOfMonth()
-        //            };
-
-        //            l.Add(d);
-        //        }
-
-        //        data.InsertRange(0, l);
-        //    }
-
-        //    return data;
-        //}
 
         public async Task<ActionResult> Administrate()
         {
@@ -203,7 +159,7 @@ namespace HakunaMatataWeb.Controllers
             guildEvent.UserId = User.Identity.GetUserId();
             guildEvent.EventMaster = User.Identity.GetDisplayName();
 
-            if (guildEvent.IsBiWeekly)
+            if (guildEvent.IsBiWeekly || guildEvent.IsWeekly)
             {
                 guildEvent.EventDayOfWeek = (int)guildEvent.FirstEventDate.DayOfWeek;
             }
@@ -286,8 +242,8 @@ namespace HakunaMatataWeb.Controllers
                 UserId = guildEvent.UserId
             };
 
-            guildEvent.Content = Helper.Base64Decode(guildEvent.Content);
-            return View(guildEvent);
+            //guildEvent.Content = Helper.Base64Decode(guildEvent.Content);
+            return View(model);
         }
 
         // POST: GuildEvents/Edit/5
@@ -297,56 +253,92 @@ namespace HakunaMatataWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,Title,EventType,IsUniqueEvent,IsMonthly,IsWeekly,IsBiWeekly,EventDayOfWeek,EventDayOfMonth,Content,UserId,EventMaster,CreationDate,LastUpdatedDate,MinLevel,MaxLevel,Featured,FirstEventDate,LastEventDate")] GuildEventViewModel m)
         {
-            var i = await db.GuildEvents.FindAsync(m.Id);
-
-            i.Content = m.Content;
-            i.EventMaster = m.EventMaster;
-            i.EventType = m.EventType;
-            i.Featured = m.Featured;
-            i.FirstEventDate = m.FirstEventDate;
-            i.IsBiWeekly = m.IsBiWeekly;
-            i.IsMonthly = m.IsMonthly;
-            i.IsUniqueEvent = m.IsUniqueEvent;
-            i.IsWeekly = m.IsWeekly;
-            i.LastEventDate = m.LastEventDate;
-            i.MaxLevel = m.MaxLevel;
-            i.MinLevel = m.MinLevel;
-            i.Title = m.Title;
-            i.LastUpdatedDate = DateTime.Now;
-            i.LocalTimeZoneId = i.LocalTimeZoneId ?? User.GetClaimValueString(CustomClaims.LocalTimezone.ToString());
-
-            if (i.IsBiWeekly)
+            logger.Trace("Entering edit guild event method");
+            logger.Trace("Searching for guild event with id of {0}", m.Id);
+            try
             {
-                i.EventDayOfWeek = (int)i.FirstEventDate.DayOfWeek;
-            }
-            if (i.IsMonthly)
-            {
-                i.EventDayOfMonth = (int)i.FirstEventDate.Day;
-            }
-            i.LastUpdatedDate = DateTime.Now;
-            i.Content = Helper.Base64Encode(m.Content);
-            if (ModelState.IsValid)
-            {
-                try
+                if (ModelState.IsValid)
                 {
-                    db.Entry(i).State = EntityState.Modified;
-                    await db.SaveChangesAsync();
-                    return RedirectToAction("Index");
-                }
-                catch (DbEntityValidationException e)
-                {
-                    foreach (var eve in e.EntityValidationErrors)
+                    var i = await db.GuildEvents.FindAsync(m.Id);
+                    logger.Trace("Event Id returned is {0}", i.Id);
+
+                    if (i != null)
                     {
-                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
-                        foreach (var ve in eve.ValidationErrors)
+                        if (i.IsMonthly != m.IsMonthly || i.IsBiWeekly != m.IsBiWeekly || i.IsWeekly != m.IsWeekly)
                         {
-                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
-                                ve.PropertyName, ve.ErrorMessage);
+                            if (i.IsBiWeekly || i.IsWeekly)
+                            {
+                                i.EventDayOfWeek = (int)i.FirstEventDate.DayOfWeek;
+                            }
+                            if (i.IsMonthly)
+                            {
+                                i.EventDayOfMonth = (int)i.FirstEventDate.Day;
+                            }
+                        }
+
+                        logger.Trace("Found guild event with id of {0}", m.Id);
+
+                        i.Content = m.Content;
+                        i.EventType = m.EventType;
+                        i.Featured = m.Featured;
+                        i.FirstEventDate = m.FirstEventDate;
+                        i.IsBiWeekly = m.IsBiWeekly;
+                        i.IsMonthly = m.IsMonthly;
+                        i.IsUniqueEvent = m.IsUniqueEvent;
+                        i.IsWeekly = m.IsWeekly;
+                        i.LastEventDate = m.LastEventDate;
+                        i.MaxLevel = m.MaxLevel;
+                        i.MinLevel = m.MinLevel;
+                        i.Title = m.Title;
+                        i.LastUpdatedDate = DateTime.Now;
+                        i.LocalTimeZoneId = i.LocalTimeZoneId ?? User.GetClaimValueString(CustomClaims.LocalTimezone.ToString());
+                        i.Content = Helper.Base64Encode(m.Content);
+
+                        logger.Trace("Finished building db model");
+
+                        try
+                        {
+                            db.Entry(i).State = EntityState.Modified;
+                            await db.SaveChangesAsync();
+                            return RedirectToAction("Index");
+                        }
+                        catch (DbEntityValidationException e)
+                        {
+                            foreach (var eve in e.EntityValidationErrors)
+                            {
+                                logger.Error("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                                    eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                                foreach (var ve in eve.ValidationErrors)
+                                {
+                                    logger.Error("- Property: \"{0}\", Error: \"{1}\"",
+                                        ve.PropertyName, ve.ErrorMessage);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Not found", new Exception(string.Concat("Could not find guild event with id of ", m.Id)));
+                        logger.Error("Could not find guild event with id of {0}", m.Id);
+                    }
+                }
+                else
+                {
+                    foreach (ModelState modelState in ViewData.ModelState.Values)
+                    {
+                        foreach (ModelError error in modelState.Errors)
+                        {
+                            logger.Error("Invalid guild event model state. Error: {0} || Exception {1} || Account: {2} || GuideID: {3}",
+                                error.ErrorMessage, error.Exception.Message, User.Identity.GetUserName(), m.Id);
                         }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                logger.Error(ex, string.Concat("Uncaught exception in GuildEventsController.Edit::", ex.Message, "::", ex.InnerException.Message));
+            }
+
             return View(m);
         }
 

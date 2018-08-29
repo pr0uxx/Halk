@@ -19,11 +19,9 @@ namespace HakunaMatataWeb.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
-        
 
         public AccountController()
         {
-            
         }
 
         public AccountController(ApplicationUserManager UserManager, ApplicationSignInManager SignInManager)
@@ -72,6 +70,7 @@ namespace HakunaMatataWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            logger.Trace(string.Concat("User is trying to login with username ", model.UserName));
             if (!ModelState.IsValid)
             {
                 logger.Error(string.Concat(model.UserName, " login failed. Model state invalid "));
@@ -81,9 +80,8 @@ namespace HakunaMatataWeb.Controllers
                     {
                         foreach (var e in i.Errors)
                         {
-                            logger.Error(string.Concat(model.UserName, " model Error:: ", e.ErrorMessage));
+                            logger.Error(string.Concat(model.UserName, " model Error:: ", e.ErrorMessage)); // Thanks Lewis <3
                         }
-                        
                     }
                 }
                 return View(model);
@@ -97,7 +95,7 @@ namespace HakunaMatataWeb.Controllers
                 {
                     string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account-Resend");
 
-                    // Uncomment to debug locally  
+                    // Uncomment to debug locally
                     // ViewBag.Link = callbackUrl;
                     ViewBag.errorMessage = "You must have a confirmed email to log on. "
                                          + "The confirmation token has been resent to your email account.";
@@ -195,7 +193,7 @@ namespace HakunaMatataWeb.Controllers
             model.TimezoneList = new SelectList(Helper.GetTimeZoneList(), "Value", "Text", "0");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, SiteRank = Data.Enums.SiteRank.User};
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, SiteRank = Data.Enums.SiteRank.User };
 
                 try
                 {
@@ -203,17 +201,17 @@ namespace HakunaMatataWeb.Controllers
 
                     if (result.Succeeded)
                     {
-                        //await signInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        await signInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                         // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                         // Send an email with this link
                         string code = await userManager.GenerateEmailConfirmationTokenAsync(user.Id);
                         string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account");
-                        await userManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                        //await userManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
                         var uid = signInManager.AuthenticationManager.AuthenticationResponseGrant.Identity.GetUserId();
+                        AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
                         ViewBag.Message = "Check your email and confirm your account, you must be confirmed "
                          + "before you can log in.";
-
 
                         //var claim = new Microsoft.AspNet.Identity.EntityFramework.IdentityUserClaim()
                         //{
@@ -249,7 +247,7 @@ namespace HakunaMatataWeb.Controllers
 
                         user.Claims.Add(claim);
 
-                        userManager.Update(user);                        
+                        userManager.Update(user);
 
                         return View("Info");
 

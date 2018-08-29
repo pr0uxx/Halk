@@ -12,6 +12,8 @@ namespace HakunaMatataWeb.Utilities
 {
     public class Helper
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public static String CleanInputString(string dirtyString)
         {
             return new string(dirtyString.Where(Char.IsLetterOrDigit).ToArray());
@@ -81,9 +83,14 @@ namespace HakunaMatataWeb.Utilities
         {
             try
             {
-                var localTimeZone = TimeZoneInfo.FindSystemTimeZoneById(localTimeZoneId);
-                var localTime = TimeZoneInfo.ConvertTimeFromUtc(utcDate, localTimeZone);
-                return localTime;
+                if (localTimeZoneId != null)
+                {
+                    var localTimeZone = TimeZoneInfo.FindSystemTimeZoneById(localTimeZoneId);
+                    var localTime = TimeZoneInfo.ConvertTimeFromUtc(utcDate, localTimeZone);
+                    return localTime;
+                }
+
+                return utcDate;
             }
             catch
             {
@@ -93,21 +100,29 @@ namespace HakunaMatataWeb.Utilities
 
         public static bool IsImageUrl(string URL)
         {
-            var req = (HttpWebRequest)HttpWebRequest.Create(URL);
-            req.Method = "HEAD";
-            req.Timeout = 1000;
-            try
+            Uri uriResult;
+            bool result = Uri.TryCreate(URL, UriKind.Absolute, out uriResult);
+            if (result)
             {
-                using (var resp = req.GetResponse())
+                var req = (HttpWebRequest)HttpWebRequest.Create(URL);
+                req.Method = "HEAD";
+                req.Timeout = 1000;
+                try
                 {
-                    return resp.ContentType.ToLower(CultureInfo.InvariantCulture)
-                               .StartsWith("image/", StringComparison.OrdinalIgnoreCase);
+                    using (var resp = req.GetResponse())
+                    {
+                        return resp.ContentType.ToLower(CultureInfo.InvariantCulture)
+                                   .StartsWith("image/", StringComparison.OrdinalIgnoreCase);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.Warn(ex, string.Concat("Image causes exception: ", URL));
+                    return false;
                 }
             }
-            catch
-            {
-                return false;
-            }
+
+            return false;
         }
 
         /// <summary>
@@ -144,7 +159,6 @@ namespace HakunaMatataWeb.Utilities
             {
                 return s;
             }
-            
         }
 
         public static string Base64Decode(string s)
@@ -158,7 +172,6 @@ namespace HakunaMatataWeb.Utilities
             {
                 return s;
             }
-            
         }
 
         public static string GetFirstUrlFromContent(string content)
@@ -177,7 +190,6 @@ namespace HakunaMatataWeb.Utilities
                         }
                     }
                 }
-
             }
 
             return string.Empty;
